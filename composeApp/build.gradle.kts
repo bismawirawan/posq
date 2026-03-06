@@ -1,4 +1,6 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -8,22 +10,51 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.kotlinParcelize)
+    alias(libs.plugins.buildKonfig)
+    alias(libs.plugins.kotzilla)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.crashlytics)
+}
+
+buildkonfig {
+    packageName = "my.lokalan.posq"
+
+    val kotzillaStagingKey = project.findProperty("kotzillaStagingKey") ?: ""
+    val kotzillaProductionKey = project.findProperty("kotzillaProductionKey") ?: ""
+
+    defaultConfigs {
+        buildConfigField(BOOLEAN, "IS_DEBUG", "true")
+        buildConfigField(STRING, "KOTZILLA_KEY", "$kotzillaStagingKey")
+    }
+    // flavor is passed as a first argument of defaultConfigs
+    defaultConfigs("production") {
+        buildConfigField(BOOLEAN, "IS_DEBUG", "false")
+        buildConfigField(STRING, "KOTZILLA_KEY", "$kotzillaProductionKey")
+    }
+
 }
 
 kotlin {
     androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
-    
+
     listOf(
+        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            // Required when using NativeSQLiteDriver
+            linkerOpts.add("-lsqlite3")
+            freeCompilerArgs += "-Xexpect-actual-classes"
+            freeCompilerArgs += "-Xbinary=bundleId=com.talangraga.umrohmobile.app"
         }
     }
     
@@ -43,11 +74,13 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
+            implementation(libs.navigation.compose)
             implementation(libs.constraintlayout.compose.multiplatform)
 
             implementation(libs.material.icons.extended)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.kotzilla.sdk.compose)
 
             implementation(libs.kotlinx.datetime)
 
@@ -59,15 +92,25 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.client.auth)
+            implementation(libs.napier)
+            implementation(libs.inspektify.ktor3)
 
-            // Media Picker
-            implementation(libs.image.picker.kmp)
+            // SQLDelight
+            implementation(libs.runtime)
 
             // optionally coroutines extensions
             implementation(libs.coroutines.extensions)
             implementation(libs.multiplatform.settings)
             implementation(libs.multiplatform.settings.serialization)
             implementation(libs.multiplatform.settings.coroutines)
+
+            // Gitlive Firebase
+            implementation(libs.firebase.app)
+            implementation(libs.firebase.analytic)
+            implementation(libs.firebase.crashlytic)
+
+            // Media Picker
+            implementation(libs.image.picker.kmp)
 
             implementation(project(":data"))
             implementation(project(":shared"))
@@ -106,7 +149,21 @@ android {
     }
     buildTypes {
         getByName("release") {
+            isMinifyEnabled = true
+        }
+        getByName("debug") {
             isMinifyEnabled = false
+        }
+    }
+
+    flavorDimensions += "version"
+    productFlavors {
+        create("staging") {
+            dimension = "version"
+            applicationIdSuffix = ".staging"
+        }
+        create("production") {
+            dimension = "version"
         }
     }
     compileOptions {

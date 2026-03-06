@@ -24,11 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-/**
- * iqbalfauzi
- * Email: work.iqbalfauzi@gmail.com
- * Github: https://github.com/iqbalwork
- */
 @Composable
 fun ModalImagePicker(
     onDismissRequest: () -> Unit,

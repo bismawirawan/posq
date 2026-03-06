@@ -42,11 +42,6 @@ import coil3.compose.SubcomposeAsyncImageContent
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-/**
- * iqbalfauzi
- * Email: work.iqbalfauzi@gmail.com
- * Github: https://github.com/iqbalwork
- */
 @Composable
 fun ZoomableCoilImage(
     model: Any?,

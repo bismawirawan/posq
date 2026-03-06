@@ -1,0 +1,17 @@
+{
+  "sdkVersion": "1.2.2",
+  "keys": [
+    {
+      "appId": "019c5614-cd51-74ae-ac77-f316f9450add",
+      "applicationPackageName": "my.lokalan.posq",
+      "keyId": "019c5666-ca3f-7637-855d-b89fb0e55563",
+      "apiKey": "ktz-sdk-kDegrpyGiQux5D3ZEAG3ADs_0kzwzPzLvwyMS-kL-eU"
+    },
+    {
+      "appId": "019cc442-201d-79ee-a724-c10c0676eed9",
+      "applicationPackageName": "my.lokalan.posq.staging",
+      "keyId": "019cc442-4209-7a17-ab10-cfd921b5d6ac",
+      "apiKey": "ktz-sdk-EanQtGCvM1DrT4K-WrciCdB2m1ARXfBMCmF4KYkH4NM"
+    }
+  ]
+}

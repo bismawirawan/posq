@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "402900078945",
+    "project_id": "posq-b75ab",
+    "storage_bucket": "posq-b75ab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:402900078945:android:f3c8929b2f0156556b3520",
+        "android_client_info": {
+          "package_name": "my.lokalan.posq"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiLOLJLeJfPc8VQw-viOJX6ENg09uoOUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
