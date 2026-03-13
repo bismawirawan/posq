@@ -88,7 +88,7 @@ class HomeViewModel(
                     )
                 }
                 if (_userType.value.isNullOrBlank()) {
-                    _userType.update { userResponse.userType }
+                    _userType.update { userResponse.role }
                 }
             }
         }

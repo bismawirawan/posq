@@ -9,7 +9,6 @@ data class UserEntity(
     val fullname: String,
     val email: String,
     val phone: String,
-    val domisili: String,
-    val userType: String,
+    val role: String,
     val imageProfileUrl: String,
 )

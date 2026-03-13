@@ -42,7 +42,7 @@ import my.posq.shared.formatDateRange
 import my.lokalan.posq.navigation.Screen
 import my.lokalan.posq.presentation.home.HomeViewModel
 import my.lokalan.posq.presentation.transaction.model.TransactionUiData
-import my.lokalan.posq.ui.component.TalangragaScaffold
+import my.lokalan.posq.ui.component.PosqScaffold
 import my.lokalan.posq.ui.component.TextButton
 import my.lokalan.posq.ui.component.TextButtonOption
 import my.lokalan.posq.ui.theme.PosqTheme
@@ -83,7 +83,7 @@ fun TransactionContent(
     onAddTransaction: () -> Unit,
 ) {
 
-    TalangragaScaffold(
+    PosqScaffold(
         contentWindowInsets = WindowInsets.statusBars,
         topBar = {
             CenterAlignedTopAppBar(

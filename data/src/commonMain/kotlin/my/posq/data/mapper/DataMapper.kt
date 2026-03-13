@@ -1,10 +1,8 @@
 package my.posq.data.mapper
 
-import my.posq.data.local.database.model.PaymentEntity
 import my.posq.data.local.database.model.PeriodEntity
 import my.posq.data.local.database.model.TransactionEntity
 import my.posq.data.local.database.model.UserEntity
-import my.posq.data.network.model.response.PaymentResponse
 import my.posq.data.network.model.response.PeriodeResponse
 import my.posq.data.network.model.response.TransactionResponse
 import my.posq.data.network.model.response.UserResponse
@@ -16,8 +14,7 @@ fun UserResponse.toUserEntity(): UserEntity {
         fullname = this.fullname.orEmpty(),
         email = this.email.orEmpty(),
         phone = this.phone.orEmpty(),
-        domisili = this.domisili.orEmpty(),
-        userType = this.userType.orEmpty(),
+        role = this.role.orEmpty(),
         imageProfileUrl = this.imageProfile.orEmpty()
     )
 }
@@ -43,13 +40,5 @@ fun TransactionResponse.toTransactionEntity(): TransactionEntity {
         paymentName = payment?.paymentName.orEmpty(),
         reportedBy = reportedByUser?.fullname.orEmpty(),
         confirmedBy = confirmedByUser?.fullname.orEmpty(),
-    )
-}
-
-fun PaymentResponse.toPaymentEntity(): PaymentEntity {
-    return PaymentEntity(
-        paymentId = id,
-        paymentName = paymentName,
-        paymentType = paymentType,
     )
 }

@@ -34,7 +34,7 @@ import my.lokalan.posq.presentation.home.section.ProfileSection
 import my.lokalan.posq.presentation.user.model.UserUIData
 import my.lokalan.posq.presentation.utils.toUiData
 import my.lokalan.posq.ui.component.ImageViewerManager
-import my.lokalan.posq.ui.component.TalangragaScaffold
+import my.lokalan.posq.ui.component.PosqScaffold
 import my.lokalan.posq.ui.section.DialogUserType
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -54,7 +54,7 @@ fun HomeScreen(
 
     HomeContent(
         user = userProfile?.toUiData(),
-        userType = userProfile?.userType.orEmpty(),
+        role = userProfile?.role.orEmpty(),
         onUserTypeChange = viewModel::setUserType,
         selectedPeriod = viewModel.selectedPeriod.value,
         uiState = uiState,
@@ -78,7 +78,7 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     user: UserUIData?,
-    userType: String,
+    role: String,
     onUserTypeChange: (String) -> Unit,
     selectedPeriod: PeriodEntity?,
     uiState: HomeUiState,
@@ -108,7 +108,7 @@ fun HomeContent(
         }
     }
 
-    TalangragaScaffold(
+    PosqScaffold(
         contentWindowInsets = WindowInsets.statusBars,
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -149,7 +149,7 @@ fun HomeContent(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.surface)
                             .padding(top = paddingValues.calculateTopPadding()),
-                        userType = userType,
+                        role = role,
                         user = user,
                         state = uiState.profile,
                         onRetry = onFetchProfile,
@@ -199,8 +199,7 @@ fun PreviewHomeContent() {
             fullname = "Iqbal Fauzi",
             email = "",
             phone = "",
-            domicile = "",
-            userType = "Admin",
+            role = "Admin",
             imageProfileUrl = "",
             isActive = true
         ),
@@ -212,8 +211,7 @@ fun PreviewHomeContent() {
                     fullname = "Iqbal Fauzi",
                     email = "",
                     phone = "",
-                    domicile = "",
-                    userType = "Admin",
+                    role = "Admin",
                     imageProfileUrl = "",
                     isActive = true
                 )
@@ -225,7 +223,7 @@ fun PreviewHomeContent() {
         errorMessage = "",
         onFetchProfile = {},
         onPeriodChange = {},
-        userType = "Admin",
+        role = "Admin",
         onUserTypeChange = { },
         onSeeMoreTransaction = { },
         onAddTransaction = { },

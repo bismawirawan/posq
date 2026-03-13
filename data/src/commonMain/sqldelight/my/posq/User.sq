@@ -4,8 +4,7 @@ CREATE TABLE UserData (
     fullname TEXT NOT NULL,
     email TEXT,
     phone TEXT,
-    domisili TEXT,
-    userType TEXT,
+    role TEXT NOT NULL,
     imageProfileUrl TEXT
 );
 
@@ -17,10 +16,9 @@ INSERT OR REPLACE INTO UserData(
     fullname,
     email,
     phone,
-    domisili,
-    userType,
+    role,
     imageProfileUrl
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+) VALUES (?, ?, ?, ?, ?, ?, ?);
 
 upsertUserData:
 INSERT OR REPLACE INTO UserData(
@@ -29,10 +27,9 @@ INSERT OR REPLACE INTO UserData(
     fullname,
     email,
     phone,
-    domisili,
-    userType,
+    role,
     imageProfileUrl
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+) VALUES (?, ?, ?, ?, ?, ?, ?);
 
 -- Get all records
 selectAllUserData:

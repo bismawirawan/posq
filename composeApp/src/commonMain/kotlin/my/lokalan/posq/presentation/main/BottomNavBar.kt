@@ -25,7 +25,7 @@ fun BottomNavBar(
 
     val session: Session = koinInject()
     val isLogin = session.getBoolean(SessionKey.IS_LOGGED_IN)
-    val userType = session.userProfile.value?.userType.orEmpty()
+    val role = session.userProfile.value?.role.orEmpty()
 
     NavigationBar {
         NavigationBarItem(
@@ -48,7 +48,7 @@ fun BottomNavBar(
                 selectedIconColor = Sage
             )
         )
-        if (isLogin && userType.lowercase() == "admin") {
+        if (isLogin && role.lowercase() == "admin") {
             NavigationBarItem(
                 selected = selected is BottomNavRoute.Member,
                 onClick = { onSelect(BottomNavRoute.Member) },

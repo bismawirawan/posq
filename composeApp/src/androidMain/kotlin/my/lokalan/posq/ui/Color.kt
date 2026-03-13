@@ -1,3 +1,3 @@
-package com.talangraga.umrohmobile.ui
+package my.lokalan.posq.ui
 
 // 🎨 Brand Colors

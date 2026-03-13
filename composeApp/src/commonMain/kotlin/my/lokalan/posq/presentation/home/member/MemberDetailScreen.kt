@@ -41,7 +41,7 @@ import my.lokalan.posq.presentation.transaction.model.TransactionUiData
 import my.lokalan.posq.presentation.user.model.UserUIData
 import my.lokalan.posq.ui.component.BasicImage
 import my.lokalan.posq.ui.component.ImageViewerManager
-import my.lokalan.posq.ui.component.TalangragaScaffold
+import my.lokalan.posq.ui.component.PosqScaffold
 import my.lokalan.posq.ui.theme.PosqTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
@@ -73,7 +73,7 @@ fun HomeMemberContent(
     transactionState: SectionState<List<TransactionUiData>>,
     onBackClick: () -> Unit
 ) {
-    TalangragaScaffold(
+    PosqScaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
@@ -151,7 +151,7 @@ fun HomeMemberContent(
                         modifier = Modifier
                     )
 
-                    val infoLabel = "@${user?.username.orEmpty()} | ${user?.domicile.orEmpty()}"
+                    val infoLabel = "@${user?.username.orEmpty()}"
                     Text(
                         text = infoLabel,
                         style = PosqTypography.bodyMedium,
@@ -184,8 +184,7 @@ fun PreviewHomeMemberContent() {
                 fullname = "Iqbal Fauzi",
                 email = "work.iqbalfauzi",
                 phone = "087822882668",
-                domicile = "Bandung",
-                userType = "member",
+                role = "member",
                 imageProfileUrl = "",
                 isActive = true
             ),

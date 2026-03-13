@@ -15,11 +15,6 @@ import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-/**
- * iqbalfauzi
- * Email: work.iqbalfauzi@gmail.my
- * Github: https://github.com/iqbalwork
- */
 class RefreshTokenHandler(
     private val engine: HttpClientEngine,
     private val tokenManager: TokenManager,

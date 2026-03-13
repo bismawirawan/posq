@@ -33,12 +33,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import my.posq.shared.SageDark
 import my.posq.shared.PosqTypography
-import my.posq.shared.TextSecondaryDark
 import my.lokalan.posq.navigation.Screen
 import my.lokalan.posq.ui.component.InputText
 import my.lokalan.posq.ui.component.LoadingButton
 import my.lokalan.posq.ui.component.PasswordInput
-import my.lokalan.posq.ui.component.TalangragaScaffold
+import my.lokalan.posq.ui.component.PosqScaffold
 import my.lokalan.posq.ui.component.ToastManager
 import my.lokalan.posq.ui.component.ToastType
 import my.lokalan.posq.ui.theme.PosqTheme
@@ -47,13 +46,13 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import posq.composeapp.generated.resources.Res
-import posq.composeapp.generated.resources.bg_screen
+import posq.composeapp.generated.resources.bg_screen_green
 import posq.composeapp.generated.resources.input_here
 import posq.composeapp.generated.resources.input_password_here
 import posq.composeapp.generated.resources.label_username_or_email
 import posq.composeapp.generated.resources.login
 import posq.composeapp.generated.resources.password
-import posq.composeapp.generated.resources.talangraga_logo
+import posq.composeapp.generated.resources.posq_logo
 
 @Composable
 fun LoginScreen(
@@ -99,7 +98,7 @@ fun LoginContent(
     onIdentifierChange: (String) -> Unit,
     onLoginClick: () -> Unit,
 ) {
-    TalangragaScaffold { _ ->
+    PosqScaffold { _ ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -117,7 +116,7 @@ fun LoginContent(
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(Res.drawable.bg_screen),
+                painter = painterResource(Res.drawable.bg_screen_green),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -132,24 +131,15 @@ fun LoginContent(
                 verticalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(Res.drawable.talangraga_logo),
+                    painter = painterResource(Res.drawable.posq_logo),
                     contentDescription = "Logo",
                     modifier = Modifier.size(200.dp)
                 )
                 Text(
-                    "Masuk",
+                    "Login",
                     style = PosqTypography.titleMedium.copy(
                         textAlign = TextAlign.Center,
                         fontSize = 20.sp
-                    ),
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    "Masuk via email, nomor hp, atau username",
-                    style = PosqTypography.titleMedium.copy(
-                        fontSize = 16.sp,
-                        color = TextSecondaryDark,
-                        textAlign = TextAlign.Center
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -159,7 +149,7 @@ fun LoginContent(
                     value = identifier,
                     onValueChange = onIdentifierChange,
                     placeholder = stringResource(Res.string.input_here),
-                    leadingIcon = Icons.Filled.AccountCircle,
+                    leadingIcon = Icons.Default.AccountCircle,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -171,7 +161,7 @@ fun LoginContent(
                     leadingIcon = Icons.Filled.Security,
                     modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(40.dp))
                 LoadingButton(
                     modifier = Modifier.fillMaxWidth(),
                     isLoading = isLoading,

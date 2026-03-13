@@ -27,8 +27,7 @@ fun UserData.toUserEntity(): UserEntity {
         fullname = fullname,
         email = email.orEmpty(),
         phone = phone.orEmpty(),
-        domisili = domisili.orEmpty(),
-        userType = userType.orEmpty(),
+        role = role,
         imageProfileUrl = imageProfileUrl.orEmpty()
     )
 }

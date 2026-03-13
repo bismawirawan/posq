@@ -20,7 +20,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import posq.composeapp.generated.resources.Res
-import posq.composeapp.generated.resources.talangraga_logo
+import posq.composeapp.generated.resources.posq_logo
 
 @Composable
 fun SplashScreen(
@@ -65,7 +65,7 @@ fun SplashContent() {
             verticalArrangement = Arrangement.Center,
         ) {
             Image(
-                painter = painterResource(Res.drawable.talangraga_logo),
+                painter = painterResource(Res.drawable.posq_logo),
                 contentDescription = "Splash Screen Image",
             )
         }

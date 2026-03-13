@@ -47,7 +47,7 @@ import my.lokalan.posq.presentation.user.editprofile.EditProfileViewModel
 import my.lokalan.posq.ui.component.BasicImage
 import my.lokalan.posq.ui.component.InputText
 import my.lokalan.posq.ui.component.ModalImagePicker
-import my.lokalan.posq.ui.component.TalangragaScaffold
+import my.lokalan.posq.ui.component.PosqScaffold
 import my.lokalan.posq.ui.component.ToastManager
 import my.lokalan.posq.ui.component.ToastType
 import io.github.ismoy.imagepickerkmp.domain.config.ImagePickerConfig
@@ -97,8 +97,6 @@ fun EditProfileScreen(
         onPhoneNumberChange = viewModel::onPhoneNumberChange,
         email = viewModel.email.value,
         onEmailChange = viewModel::onEmailChange,
-        domicile = viewModel.domicile.value,
-        onDomicileChange = viewModel::onDomicileChange,
         imageUrl = viewModel.imageUrl.value,
         onImageUrlChange = viewModel::onImageChange,
         onSaveClick = viewModel::onSaveClick,
@@ -116,8 +114,6 @@ fun EditProfileContent(
     onPhoneNumberChange: (String) -> Unit,
     email: String,
     onEmailChange: (String) -> Unit,
-    domicile: String,
-    onDomicileChange: (String) -> Unit,
     imageUrl: String? = null,
     onImageUrlChange: (String) -> Unit,
     onSaveClick: () -> Unit,
@@ -202,7 +198,7 @@ fun EditProfileContent(
         )
     }
 
-    TalangragaScaffold(
+    PosqScaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
@@ -301,13 +297,13 @@ fun EditProfileContent(
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            InputText(
-                title = "Domisili",
-                value = domicile,
-                onValueChange = onDomicileChange,
-                placeholder = "Masukkan domisili",
-                modifier = Modifier.fillMaxWidth()
-            )
+//            InputText(
+//                title = "Domisili",
+//                value = domicile,
+//                onValueChange = onDomicileChange,
+//                placeholder = "Masukkan domisili",
+//                modifier = Modifier.fillMaxWidth()
+//            )
 
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -315,7 +311,7 @@ fun EditProfileContent(
                 onClick = onSaveClick,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Sage),
-                enabled = fullname.isNotBlank() && domicile.isNotBlank()
+                enabled = fullname.isNotBlank()
             ) {
                 Text("Simpan Perubahan")
             }
@@ -336,8 +332,6 @@ fun PreviewEditProfileContent() {
         onPhoneNumberChange = { },
         email = "",
         onEmailChange = { },
-        domicile = "",
-        onDomicileChange = { },
         imageUrl = null,
         onImageUrlChange = { },
         onSaveClick = { },

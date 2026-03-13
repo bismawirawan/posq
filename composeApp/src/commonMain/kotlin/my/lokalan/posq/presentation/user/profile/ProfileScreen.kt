@@ -65,7 +65,7 @@ import my.lokalan.posq.presentation.utils.toUiData
 import my.lokalan.posq.ui.component.BasicImage
 import my.lokalan.posq.ui.component.IconBlock
 import my.lokalan.posq.ui.component.ImageViewerManager
-import my.lokalan.posq.ui.component.TalangragaScaffold
+import my.lokalan.posq.ui.component.PosqScaffold
 import my.lokalan.posq.ui.theme.PosqTheme
 import my.lokalan.posq.ui.theme.ThemeManager
 import my.lokalan.posq.ui.theme.ThemeMode
@@ -150,7 +150,7 @@ fun ProfileContent(
         )
     }
 
-    TalangragaScaffold(
+    PosqScaffold(
         contentWindowInsets = WindowInsets.statusBars,
         topBar = {
             CenterAlignedTopAppBar(
@@ -224,7 +224,6 @@ fun ProfileContent(
                     ) {
                         UserMenuItem(icon = Icons.Filled.Phone, text = user?.phone.orEmpty())
                         UserMenuItem(icon = Icons.Filled.Email, text = user?.email.orEmpty())
-                        UserMenuItem(icon = Icons.Filled.Place, text = user?.domicile.orEmpty())
                     }
                 }
             }
@@ -421,8 +420,7 @@ fun PreviewProfileContent() {
         ProfileContent(
             user = UserUIData(
                 1, "iqbalfauzi", "Iqbal Fauzi", "work.iqbalfauzi@gmail.com", "087822882668",
-                domicile = "Bandung",
-                userType = "admin",
+                role = "admin",
                 imageProfileUrl = "",
                 isActive = true
             ),

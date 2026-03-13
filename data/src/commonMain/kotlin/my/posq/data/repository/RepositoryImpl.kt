@@ -134,8 +134,7 @@ class RepositoryImpl(
         email: String,
         phone: String?,
         password: String,
-        domicile: String?,
-        userType: String,
+        role: String,
         imageProfile: ByteArray?
     ): Flow<Result<UserResponse>> {
         return flow {
@@ -146,8 +145,7 @@ class RepositoryImpl(
                     email,
                     phone,
                     password,
-                    domicile,
-                    userType,
+                    role,
                     imageProfile
                 )
                 if (response.data != null) {
@@ -167,8 +165,7 @@ class RepositoryImpl(
         email: String,
         phone: String?,
         password: String,
-        domicile: String?,
-        userType: String,
+        role: String,
         imageProfile: ByteArray?
     ): Flow<Result<UserResponse>> {
         return flow {
@@ -179,8 +176,7 @@ class RepositoryImpl(
                     email,
                     phone,
                     password,
-                    domicile,
-                    userType,
+                    role,
                     imageProfile
                 )
                 if (response.data != null) {
@@ -201,8 +197,7 @@ class RepositoryImpl(
         email: String,
         phone: String?,
         password: String,
-        domicile: String?,
-        userType: String,
+        role: String,
         imageProfile: ByteArray?
     ): Flow<Result<UserResponse>> {
         return flow {
@@ -214,8 +209,7 @@ class RepositoryImpl(
                     email,
                     phone,
                     password,
-                    domicile,
-                    userType,
+                    role,
                     imageProfile
                 )
                 if (response.data != null) {

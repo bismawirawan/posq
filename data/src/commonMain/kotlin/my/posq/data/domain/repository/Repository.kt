@@ -27,7 +27,6 @@ interface Repository {
         email: String,
         phone: String?,
         password: String,
-        domicile: String?,
         userType: String,
         imageProfile: ByteArray?
     ): Flow<Result<UserResponse>>
@@ -39,8 +38,7 @@ interface Repository {
         email: String,
         phone: String?,
         password: String,
-        domicile: String?,
-        userType: String,
+        role: String,
         imageProfile: ByteArray?
     ): Flow<Result<UserResponse>>
 
@@ -51,8 +49,7 @@ interface Repository {
         email: String,
         phone: String?,
         password: String,
-        domicile: String?,
-        userType: String,
+        role: String,
         imageProfile: ByteArray?
     ): Flow<Result<UserResponse>>
 

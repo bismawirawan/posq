@@ -54,7 +54,7 @@ kotlin {
             // Required when using NativeSQLiteDriver
             linkerOpts.add("-lsqlite3")
             freeCompilerArgs += "-Xexpect-actual-classes"
-            freeCompilerArgs += "-Xbinary=bundleId=com.talangraga.umrohmobile.app"
+            freeCompilerArgs += "-Xbinary=bundleId=my.lokalan.posq.app"
         }
     }
     

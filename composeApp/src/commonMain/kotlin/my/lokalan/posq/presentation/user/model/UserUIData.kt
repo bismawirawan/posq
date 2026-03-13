@@ -9,8 +9,7 @@ data class UserUIData(
     val fullname: String,
     val email: String,
     val phone: String,
-    val domicile: String,
-    val userType: String,
+    val role: String,
     val imageProfileUrl: String,
     val isActive: Boolean
 )

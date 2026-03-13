@@ -58,7 +58,7 @@ import my.lokalan.posq.presentation.user.ListUserViewModel
 import my.lokalan.posq.presentation.user.model.UserUIData
 import my.lokalan.posq.ui.component.BasicImage
 import my.lokalan.posq.ui.component.InputText
-import my.lokalan.posq.ui.component.TalangragaScaffold
+import my.lokalan.posq.ui.component.PosqScaffold
 import my.lokalan.posq.ui.component.ToastManager
 import my.lokalan.posq.ui.theme.PosqTheme
 import my.lokalan.posq.navigation.Screen
@@ -138,7 +138,7 @@ fun ListUserContent(
 
     val refreshState = rememberPullToRefreshState()
 
-    TalangragaScaffold(
+    PosqScaffold(
         contentWindowInsets = WindowInsets.statusBars,
         topBar = {
             CenterAlignedTopAppBar(
@@ -308,7 +308,7 @@ fun UserItem(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
                         .background(
-                            if (user.userType == "admin")
+                            if (user.role == "admin")
                                 MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                             else
                                 MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f)
@@ -316,10 +316,10 @@ fun UserItem(
                         .padding(horizontal = 12.dp, vertical = 6.dp)
                 ) {
                     Text(
-                        text = user.userType.replaceFirstChar { it.uppercase() },
+                        text = user.role.replaceFirstChar { it.uppercase() },
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
-                        color = if (user.userType == "admin")
+                        color = if (user.role == "admin")
                             MaterialTheme.colorScheme.primary
                         else
                             MaterialTheme.colorScheme.secondary,
@@ -351,10 +351,9 @@ fun ListUserContentSuccessPreview() {
             id = 1,
             fullname = "John Doe",
             phone = "081234567890",
-            userType = "Admin",
+            role = "Admin",
             username = "",
             email = "johndoe@mail.com",
-            domicile = "Bandung",
             imageProfileUrl = "",
             isActive = true
         ),
@@ -362,10 +361,9 @@ fun ListUserContentSuccessPreview() {
             id = 1,
             fullname = "John Doe",
             phone = "081234567890",
-            userType = "Member",
+            role = "Member",
             username = "",
             email = "johndoe@mail.com",
-            domicile = "Bandung",
             imageProfileUrl = "",
             isActive = true
         )

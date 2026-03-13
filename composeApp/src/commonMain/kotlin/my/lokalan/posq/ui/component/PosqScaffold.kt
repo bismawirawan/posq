@@ -80,7 +80,7 @@ object ToastManager {
 }
 
 @Composable
-fun TalangragaScaffold(
+fun PosqScaffold(
     modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},

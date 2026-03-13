@@ -3,7 +3,7 @@ package my.posq.shared
 import androidx.compose.ui.graphics.Color
 
 // 🎨 Brand Colors
-val Sage = Color(0xFF61895F)
+val Sage = Color(0xFF2B7F75)
 val Sandstone = Color(0xFFD1A980)
 val Linen = Color(0xFFE5E0D8)
 val Porcelain = Color(0xFFF8F8F8)

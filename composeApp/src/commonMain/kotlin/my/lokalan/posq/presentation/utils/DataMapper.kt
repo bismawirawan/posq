@@ -13,8 +13,7 @@ fun UserResponse.toUiData(): UserUIData {
         fullname = fullname.orEmpty(),
         email = email.orEmpty(),
         phone = phone.orEmpty(),
-        domicile = domisili.orEmpty(),
-        userType = userType.orEmpty(),
+        role = role.orEmpty(),
         imageProfileUrl = imageProfile.orEmpty(),
         isActive = isActive ?: false,
     )
@@ -27,8 +26,7 @@ fun UserEntity.toUiData(): UserUIData {
         fullname = fullname,
         email = email,
         phone = phone,
-        domicile = domisili,
-        userType = userType,
+        role = role,
         imageProfileUrl = imageProfileUrl,
         isActive = true,
     )

@@ -38,8 +38,7 @@ class AddUserViewModel(
     var username = mutableStateOf("")
     var phoneNumber = mutableStateOf("")
     var email = mutableStateOf("")
-    var domicile = mutableStateOf("")
-    var userType = mutableStateOf("Member")
+    var role = mutableStateOf("Member")
     var password = mutableStateOf("")
     var confirmPassword = mutableStateOf("")
     val imageUri = mutableStateOf<ByteArray?>(null)
@@ -64,12 +63,8 @@ class AddUserViewModel(
         email.value = newValue
     }
 
-    fun onDomicileChange(newValue: String) {
-        domicile.value = newValue
-    }
-
-    fun onUserTypeChange(newValue: String) {
-        userType.value = newValue
+    fun onRoleChange(newValue: String) {
+        role.value = newValue
     }
 
     fun onPasswordChange(newValue: String) {
@@ -100,8 +95,7 @@ class AddUserViewModel(
                 username = username.value,
                 phone = phoneNumber.value,
                 email = email.value,
-                domicile = domicile.value,
-                userType = userType.value.lowercase(),
+                role = role.value.lowercase(),
                 password = password.value,
                 imageProfile = imageUri.value
             ).onEach { result ->
@@ -124,8 +118,7 @@ class AddUserViewModel(
                 email = email.value,
                 phone = phoneNumber.value,
                 password = password.value,
-                domicile = domicile.value,
-                userType = userType.value,
+                role = role.value,
                 imageProfile = if (imageUri.value != null) imageUri.value else null,
             ).onEach { result ->
                 when (result) {
@@ -189,8 +182,7 @@ class AddUserViewModel(
             username = username.value,
             phone = phoneNumber.value,
             email = email.value,
-            domicile = domicile.value,
-            userType = userType.value.lowercase(),
+            userType = role.value.lowercase(),
             password = password.value,
             imageProfile = imageUri.value
         ).onEach { result ->
@@ -215,8 +207,7 @@ class AddUserViewModel(
                 onUsernameChange(data.username)
                 onPhoneNumberChange(data.phone)
                 onEmailChange(data.email)
-                onDomicileChange(data.domicile)
-                onUserTypeChange(data.userType)
+                onRoleChange(data.role)
             }
             _user.update { data }
         } else {
@@ -233,8 +224,7 @@ class AddUserViewModel(
                             onUsernameChange(data.username)
                             onPhoneNumberChange(data.phone)
                             onEmailChange(data.email)
-                            onDomicileChange(data.domicile)
-                            onUserTypeChange(data.userType)
+                            onRoleChange(data.role)
                             _user.update { result.data.toUiData() }
                         }
                     }

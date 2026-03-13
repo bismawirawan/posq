@@ -33,7 +33,7 @@ import my.posq.shared.PosqTypography
 import my.lokalan.posq.presentation.user.changepassword.ChangePasswordViewModel
 import my.lokalan.posq.ui.component.LoadingButton
 import my.lokalan.posq.ui.component.PasswordInput
-import my.lokalan.posq.ui.component.TalangragaScaffold
+import my.lokalan.posq.ui.component.PosqScaffold
 import my.lokalan.posq.ui.component.ToastManager
 import my.lokalan.posq.ui.component.ToastType
 import kotlinx.coroutines.delay
@@ -97,7 +97,7 @@ fun ChangePasswordContent(
     onConfirmPasswordChange: (String) -> Unit,
     onClickChangePassword: () -> Unit
 ) {
-    TalangragaScaffold(
+    PosqScaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text("Ganti Kata Sandi", style = PosqTypography.titleLarge) },

@@ -15,11 +15,9 @@ data class UserResponse(
     val email: String? = null,
     @SerialName("phone_number")
     val phone: String? = null,
-    @SerialName("domisili")
-    val domisili: String? = null,
-    @SerialName("user_type")
-    val userType: String? = null,
-    @SerialName("image_profile_url")
+    @SerialName("role")
+    val role: String? = null,
+    @SerialName("image_profile")
     val imageProfile: String? = null,
     @SerialName("is_active")
     val isActive: Boolean? = null

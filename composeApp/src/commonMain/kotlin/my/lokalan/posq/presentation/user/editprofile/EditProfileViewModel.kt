@@ -46,10 +46,6 @@ class EditProfileViewModel(
         email.value = value
     }
 
-    fun onDomicileChange(value: String) {
-        domicile.value = value
-    }
-
     fun onImageChange(value: String) {
         imageUrl.value = value
     }
@@ -76,7 +72,6 @@ class EditProfileViewModel(
                         onFullnameChange(data.fullname)
                         onPhoneNumberChange(data.phone)
                         onEmailChange(data.email)
-                        onDomicileChange(data.domicile)
                         onImageChange(data.imageProfileUrl)
                         _user.update { result.data.toUiData() }
                     }

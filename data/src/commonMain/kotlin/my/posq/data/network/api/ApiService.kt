@@ -51,8 +51,7 @@ class ApiService(private val httpClient: HttpClient) {
         email: String,
         phone: String?,
         password: String,
-        domicile: String?,
-        userType: String,
+        role: String,
         imageProfile: ByteArray?
     ): DataResponse<UserResponse> {
         return httpClient.submitFormWithBinaryData(
@@ -66,8 +65,7 @@ class ApiService(private val httpClient: HttpClient) {
 
                 // Optional Strings (Only append if not null)
                 phone?.let { append("phone_number", it) }
-                domicile?.let { append("domisili", it) }
-                append("user_type", userType)
+                append("user_type", role)
 
                 // File Upload (image_profile)
                 if (imageProfile != null) {
@@ -128,8 +126,7 @@ class ApiService(private val httpClient: HttpClient) {
         email: String,
         phone: String?,
         password: String,
-        domicile: String?,
-        userType: String,
+        role: String,
         imageProfile: ByteArray?
     ): DataResponse<UserResponse> {
         return httpClient.put(
@@ -146,8 +143,7 @@ class ApiService(private val httpClient: HttpClient) {
 
                         // Optional Strings (Only append if not null)
                         phone?.let { append("phone_number", it) }
-                        domicile?.let { append("domisili", it) }
-                        append("user_type", userType)
+                        append("user_type", role)
 
                         // File Upload (image_profile)
                         if (imageProfile != null) {
@@ -179,8 +175,7 @@ class ApiService(private val httpClient: HttpClient) {
         email: String,
         phone: String?,
         password: String,
-        domicile: String?,
-        userType: String,
+        role: String,
         imageProfile: ByteArray?
     ): DataResponse<UserResponse> {
         return httpClient.put("users/$userId") {
@@ -195,8 +190,7 @@ class ApiService(private val httpClient: HttpClient) {
 
                         // Optional Strings (Only append if not null)
                         phone?.let { append("phone_number", it) }
-                        domicile?.let { append("domisili", it) }
-                        append("user_type", userType)
+                        append("user_type", role)
 
                         // File Upload (image_profile)
                         if (imageProfile != null) {

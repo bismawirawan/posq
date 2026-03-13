@@ -68,7 +68,7 @@ import my.lokalan.posq.ui.component.InputTextWithStylingTitle
 import my.lokalan.posq.ui.component.LoadingButton
 import my.lokalan.posq.ui.component.ModalImagePicker
 import my.lokalan.posq.ui.component.PasswordInput
-import my.lokalan.posq.ui.component.TalangragaScaffold
+import my.lokalan.posq.ui.component.PosqScaffold
 import my.lokalan.posq.ui.component.TextButtonOption
 import my.lokalan.posq.ui.component.ToastManager
 import my.lokalan.posq.ui.component.ToastType
@@ -130,10 +130,8 @@ fun AddUserScreen(
         onPhoneNumberChange = viewModel::onPhoneNumberChange,
         email = viewModel.email.value,
         onEmailChange = viewModel::onEmailChange,
-        domicile = viewModel.domicile.value,
-        onDomicileChange = viewModel::onDomicileChange,
-        userType = viewModel.userType.value,
-        onUserTypeChange = viewModel::onUserTypeChange,
+        role = viewModel.role.value,
+        onRoleChange = viewModel::onRoleChange,
         password = viewModel.password.value,
         onPasswordChange = viewModel::onPasswordChange,
         confirmPassword = viewModel.confirmPassword.value,
@@ -159,10 +157,8 @@ fun AddUserContent(
     onPhoneNumberChange: (String) -> Unit,
     email: String,
     onEmailChange: (String) -> Unit,
-    domicile: String,
-    onDomicileChange: (String) -> Unit,
-    userType: String,
-    onUserTypeChange: (String) -> Unit,
+    role: String,
+    onRoleChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
     confirmPassword: String,
@@ -249,7 +245,7 @@ fun AddUserContent(
         )
     }
 
-    TalangragaScaffold(
+    PosqScaffold(
         topBar = {
             val titleLabel = if (isEdit) "Ubah Pengguna" else "Tambah Pengguna Baru"
             CenterAlignedTopAppBar(
@@ -377,14 +373,14 @@ fun AddUserContent(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        InputTextWithStylingTitle(
-                            title = "Domisili".mandatory(),
-                            value = domicile,
-                            onValueChange = onDomicileChange,
-                            placeholder = "Masukkan domisili",
-                            keyboardCapitalization = KeyboardCapitalization.Words,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+//                        InputTextWithStylingTitle(
+//                            title = "Domisili".mandatory(),
+//                            value = domicile,
+//                            onValueChange = onDomicileChange,
+//                            placeholder = "Masukkan domisili",
+//                            keyboardCapitalization = KeyboardCapitalization.Words,
+//                            modifier = Modifier.fillMaxWidth()
+//                        )
                         if (!isLoginUser) {
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
@@ -396,7 +392,7 @@ fun AddUserContent(
                             var expanded by remember { mutableStateOf(false) }
                             Box(modifier = Modifier.fillMaxWidth()) {
                                 TextButtonOption(
-                                    text = userType.replaceFirstChar { it.uppercase() },
+                                    text = role.replaceFirstChar { it.uppercase() },
                                     placeholder = "Pilih Jenis User",
                                     trailingIcon = Icons.Default.ArrowDropDown,
                                     modifier = Modifier.fillMaxWidth(),
@@ -407,11 +403,11 @@ fun AddUserContent(
                                     modifier = Modifier.background(Color.White)
                                 ) {
                                     DropdownMenuItem(text = { Text("Member") }, onClick = {
-                                        onUserTypeChange("Member")
+                                        onRoleChange("Member")
                                         expanded = false
                                     })
                                     DropdownMenuItem(text = { Text("Admin") }, onClick = {
-                                        onUserTypeChange("Admin")
+                                        onRoleChange("Admin")
                                         expanded = false
                                     })
                                 }
@@ -486,9 +482,9 @@ fun AddUserContent(
             }
 
             val enableRegisterButton =
-                fullname.isNotBlank() && username.isNotBlank() && email.isNotBlank() && domicile.isNotBlank() && (password.isNotBlank() && confirmPassword.isNotBlank() && (confirmPassword == password))
+                fullname.isNotBlank() && username.isNotBlank() && email.isNotBlank() && (password.isNotBlank() && confirmPassword.isNotBlank() && (confirmPassword == password))
             val enableSaveButton =
-                (fullname != user?.fullname) || (username != user.username) || (email != user.email) || (phoneNumber != user.phone) || (domicile != user.domicile)
+                (fullname != user?.fullname) || (username != user.username) || (email != user.email) || (phoneNumber != user.phone)
             LoadingButton(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
                     .onGloballyPositioned { coordinates ->
@@ -541,10 +537,8 @@ fun AddUserScreenPreview() {
             onPhoneNumberChange = {},
             email = "",
             onEmailChange = {},
-            domicile = "",
-            onDomicileChange = {},
-            userType = "Member",
-            onUserTypeChange = {},
+            role = "Member",
+            onRoleChange = {},
             password = "",
             onPasswordChange = {},
             confirmPassword = "",
@@ -572,10 +566,8 @@ fun EditserScreenPreview() {
             onPhoneNumberChange = {},
             email = "",
             onEmailChange = {},
-            domicile = "",
-            onDomicileChange = {},
-            userType = "Member",
-            onUserTypeChange = {},
+            role = "Member",
+            onRoleChange = {},
             password = "",
             onPasswordChange = {},
             confirmPassword = "",

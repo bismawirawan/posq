@@ -36,7 +36,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun ProfileSection(
     modifier: Modifier,
     user: UserUIData?,
-    userType: String?,
+    role: String?,
     state: SectionState<UserUIData>,
     onClickImage: (String) -> Unit = {},
     onRetry: () -> Unit,
@@ -141,7 +141,7 @@ fun ProfileSection(
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = userType?.replaceFirstChar { it.titlecase() }.orEmpty(),
+                        text = role?.replaceFirstChar { it.titlecase() }.orEmpty(),
                         style = PosqTypography.bodySmall.copy(
                             textAlign = TextAlign.Center,
                             color = Color.White
@@ -163,15 +163,14 @@ fun PreviewProfileSection() {
         email = "john.doe@example.com",
         phone = "1234567890",
         imageProfileUrl = "https://example.com/profile.jpg",
-        userType = "Member",
+        role = "Member",
         username = "johndoe",
-        domicile = "Bandung",
         isActive = true,
     )
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         ProfileSection(
             modifier = Modifier.fillMaxWidth(),
-            userType = "Member",
+            role = "Member",
             user = dummyUser,
             state = SectionState.Success(dummyUser),
             onRetry = {},
@@ -179,7 +178,7 @@ fun PreviewProfileSection() {
         HorizontalDivider()
         ProfileSection(
             modifier = Modifier.fillMaxWidth(),
-            userType = "Admin",
+            role = "Admin",
             user = dummyUser,
             state = SectionState.Loading,
             onRetry = {},
@@ -187,7 +186,7 @@ fun PreviewProfileSection() {
         HorizontalDivider()
         ProfileSection(
             modifier = Modifier.fillMaxWidth(),
-            userType = "Member",
+            role = "Member",
             user = dummyUser,
             state = SectionState.Error("Failed to load"),
             onRetry = {},

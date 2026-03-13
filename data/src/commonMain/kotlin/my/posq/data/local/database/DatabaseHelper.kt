@@ -55,15 +55,14 @@ class DatabaseHelper(factory: DriverFactory) {
             }
 
     fun insertUsers(list: List<UserEntity>) {
-        list.forEach { (userId, userName, fullname, email, phone, domisili, userType, imageProfileUrl) ->
+        list.forEach { (userId, userName, fullname, email, phone, role, imageProfileUrl) ->
             usersQueries.insertUserData(
                 userId = userId.toLong(),
                 username = userName,
                 fullname = fullname,
                 email = email,
                 phone = phone,
-                domisili = domisili,
-                userType = userType,
+                role = role,
                 imageProfileUrl = imageProfileUrl
             )
         }
