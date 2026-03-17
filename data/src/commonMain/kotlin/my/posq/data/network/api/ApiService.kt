@@ -28,10 +28,10 @@ class ApiService(private val httpClient: HttpClient) {
 
     private val authProvider = httpClient.authProvider<BearerAuthProvider>()
 
-    suspend fun login(identifier: String, password: String): DataResponse<TokenResponse> {
+    suspend fun login(email: String, password: String): DataResponse<TokenResponse> {
         val loginRequest =
             LoginRequest(
-                identifier = identifier,
+                email = email,
                 password = password
             )
         authProvider?.clearToken()

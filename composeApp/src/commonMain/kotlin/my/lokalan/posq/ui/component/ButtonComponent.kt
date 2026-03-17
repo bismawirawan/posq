@@ -11,7 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import my.posq.shared.PosqTypography
 import my.posq.shared.Sandstone
 
 @Composable
@@ -48,7 +51,11 @@ fun LoadingButton(
             }
             Text(
                 text = text,
-                modifier = Modifier.padding(horizontal = 8.dp)
+                style = PosqTypography.titleMedium.copy(
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp
+                ),
+                modifier = Modifier.padding(vertical = 2.dp)
             )
         }
     }

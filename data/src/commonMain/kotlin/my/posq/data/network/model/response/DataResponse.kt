@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DataResponse<T>(
     @SerialName("data") val data: T?,
-    @SerialName("code") val code: Int? = null,
+    @SerialName("status") val status: Boolean,
     @SerialName("message") val message: String? = null,
 )

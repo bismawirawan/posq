@@ -10,7 +10,7 @@ import my.posq.data.network.model.response.UserResponse
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {
-    fun login(identifier: String, password: String): Flow<Result<TokenResponse>>
+    fun login(email: String, password: String): Flow<Result<TokenResponse>>
     fun getLoginProfile(): Flow<Result<UserResponse>>
     fun getTransactions(
         periodId: Int? = null,

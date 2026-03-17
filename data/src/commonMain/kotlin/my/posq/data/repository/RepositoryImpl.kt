@@ -336,7 +336,7 @@ class RepositoryImpl(
                     newPassword,
                     confirmNewPassword
                 )
-                if (response.code == 200) {
+                if (response.status) {
                     emit(Result.Success(Unit))
                 } else {
                     emit(Result.Error(Exception(response.message)))
