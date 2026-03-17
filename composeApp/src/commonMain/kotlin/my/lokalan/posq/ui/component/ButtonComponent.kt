@@ -49,14 +49,16 @@ fun LoadingButton(
                     modifier = Modifier.size(24.dp)
                 )
             }
-            Text(
-                text = text,
-                style = PosqTypography.titleMedium.copy(
-                    textAlign = TextAlign.Center,
-                    fontSize = 14.sp
-                ),
-                modifier = Modifier.padding(vertical = 2.dp)
-            )
+            AnimatedVisibility(visible = !isLoading) {
+                Text(
+                    text = text,
+                    style = PosqTypography.titleMedium.copy(
+                        textAlign = TextAlign.Center,
+                        fontSize = 14.sp
+                    ),
+                    modifier = Modifier.padding(vertical = 2.dp)
+                )
+            }
         }
     }
 }

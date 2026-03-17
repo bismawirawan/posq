@@ -29,7 +29,6 @@ import androidx.navigation.NavHostController
 import my.posq.data.local.database.model.PeriodEntity
 import my.lokalan.posq.navigation.Screen
 import my.lokalan.posq.presentation.home.section.HomeInfoTransactionSection
-import my.lokalan.posq.presentation.home.section.PeriodSection
 import my.lokalan.posq.presentation.home.section.ProfileSection
 import my.lokalan.posq.presentation.user.model.UserUIData
 import my.lokalan.posq.presentation.utils.toUiData
@@ -95,9 +94,6 @@ fun HomeContent(
     val userTypeSheetState = rememberModalBottomSheetState()
     val userTypeScope = rememberCoroutineScope()
     var userTypeShowBottomSheet by remember { mutableStateOf(false) }
-    val periodSheetState = rememberModalBottomSheetState()
-    val periodScope = rememberCoroutineScope()
-    var periodShowBottomSheet by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -160,20 +156,6 @@ fun HomeContent(
                 }
 
                 item {
-                    PeriodSection(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        period = selectedPeriod,
-                        onClickAll = {
-                            onPeriodChange(null)
-                            onFetchAllTransaction()
-                        },
-                        onShowPeriodSheet = { periodShowBottomSheet = true }
-                    )
-                }
-
-                item {
                     HomeInfoTransactionSection(
                         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
                         isHomeAdminDashboard = true,
@@ -195,8 +177,8 @@ fun PreviewHomeContent() {
     HomeContent(
         user = UserUIData(
             id = 1,
-            username = "iqbalf",
-            fullname = "Iqbal Fauzi",
+            username = "admin1",
+            fullname = "Admin 1",
             email = "",
             phone = "",
             role = "Admin",
@@ -207,8 +189,8 @@ fun PreviewHomeContent() {
             profile = SectionState.Success(
                 UserUIData(
                     id = 1,
-                    username = "iqbalf",
-                    fullname = "Iqbal Fauzi",
+                    username = "admin1",
+                    fullname = "Admin 1",
                     email = "",
                     phone = "",
                     role = "Admin",

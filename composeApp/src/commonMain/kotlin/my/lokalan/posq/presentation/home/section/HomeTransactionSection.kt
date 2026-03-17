@@ -316,7 +316,7 @@ fun PreviewTransactionSection() {
             buktiTransferUrl = "",
             paymentType = "Bank Transfer",
             paymentName = "BCA",
-            reportedBy = "Iqbal Fauzi",
+            reportedBy = "Admin 1",
             confirmedBy = ""
         ),
         TransactionUiData(
@@ -328,7 +328,7 @@ fun PreviewTransactionSection() {
             buktiTransferUrl = "",
             paymentType = "Bank Transfer",
             paymentName = "BCA",
-            reportedBy = "Iqbal Fauzi",
+            reportedBy = "Admin 1",
             confirmedBy = ""
         ),
         TransactionUiData(
@@ -340,7 +340,7 @@ fun PreviewTransactionSection() {
             buktiTransferUrl = "",
             paymentType = "Bank Transfer",
             paymentName = "BCA",
-            reportedBy = "Iqbal Fauzi",
+            reportedBy = "Admin 1",
             confirmedBy = ""
         )
     )

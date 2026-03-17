@@ -180,9 +180,9 @@ fun PreviewHomeMemberContent() {
         HomeMemberContent(
             user = UserUIData(
                 id = 1,
-                username = "iqbalwork",
-                fullname = "Iqbal Fauzi",
-                email = "work.iqbalfauzi",
+                username = "admin1",
+                fullname = "Admin 1",
+                email = "admin1",
                 phone = "087822882668",
                 role = "member",
                 imageProfileUrl = "",
@@ -196,8 +196,8 @@ fun PreviewHomeMemberContent() {
                         transactionDate = "2025-08-29T22:15:00.000Z",
                         statusTransaksi = "",
                         reportedDate = "2025-08-29T22:15:00.000Z",
-                        reportedBy = "Iqbal Fauzi",
-                        confirmedBy = "Iqbal Fauzi",
+                        reportedBy = "Admin 1",
+                        confirmedBy = "Admin 1",
                         buktiTransferUrl = "",
                         paymentType = "Transfer Bank",
                         paymentName = "BCA"

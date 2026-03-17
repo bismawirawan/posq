@@ -14,6 +14,8 @@ import my.posq.data.network.api.Result
 import my.posq.data.network.model.response.DataResponse
 import my.posq.data.network.model.response.TokenResponse
 import my.posq.data.network.model.response.UserResponse
+import io.ktor.client.call.body
+import io.ktor.client.plugins.ClientRequestException
 import io.ktor.serialization.JsonConvertException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -42,13 +44,25 @@ class RepositoryImpl(
     ): Flow<Result<T>> = flow {
         try {
             val response = apiCall()
-            val data = response.data
 
-            if (data != null) {
-                onSuccess(data)
-                emit(Result.Success(data))
+            // Check status first, then check data
+            if (response.status && response.data != null) {
+                onSuccess(response.data)
+                emit(Result.Success(response.data))
             } else {
-                emit(Result.Error(Exception(response.message)))
+                // If status is false or data is null, it's an error
+                val errorMessage = response.message ?: "Unknown error occurred"
+                emit(Result.Error(Exception(errorMessage)))
+            }
+        } catch (e: ClientRequestException) {
+            // Handle 4xx errors (like 401 Unauthorized)
+            try {
+                val errorResponse = e.response.body<DataResponse<T>>()
+                val errorMessage = errorResponse.message ?: "Request failed"
+                emit(Result.Error(Exception(errorMessage)))
+            } catch (parseError: Exception) {
+                val message = normalizeErrorMessage(e)
+                emit(Result.Error(Exception(message)))
             }
         } catch (e: JsonConvertException) {
             val message = normalizeErrorMessage(e)
@@ -115,7 +129,7 @@ class RepositoryImpl(
                     session.saveProfile(token.userResponse)
                     session.saveBoolean(SessionKey.IS_LOGGED_IN, true)
                 }
-            }
+            },
         )
     }
 

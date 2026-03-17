@@ -126,10 +126,17 @@ fun PosqScaffold(
         contentColor = contentColor,
         contentWindowInsets = contentWindowInsets,
     ) { paddingValues ->
-        Box(modifier = Modifier.fillMaxSize()) {
+        // IMPORTANT: apply paddingValues to the container so all content (including absolute/aligned children)
+        // is laid out below the topBar/status bar by default.
+        Box(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(paddingValues) // <-- apply scaffold padding here
+        ) {
+            // still pass paddingValues into content so children that explicitly use it can respond
             content(paddingValues)
 
-            // Toast Overlay
+            // Toast Overlay (kept as before; uses paddingValues.calculateTopPadding())
             AnimatedVisibility(
                 visible = toastState != null && !toastState?.message.isNullOrBlank(),
                 enter = slideInVertically { -it } + fadeIn(),

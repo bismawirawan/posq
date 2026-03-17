@@ -419,7 +419,7 @@ fun PreviewProfileContent() {
     PosqTheme(useDynamicColor = false) {
         ProfileContent(
             user = UserUIData(
-                1, "iqbalfauzi", "Iqbal Fauzi", "work.iqbalfauzi@gmail.com", "087822882668",
+                1, "admin1", "Admin 1", "admin1@pos.com", "087822882668",
                 role = "admin",
                 imageProfileUrl = "",
                 isActive = true

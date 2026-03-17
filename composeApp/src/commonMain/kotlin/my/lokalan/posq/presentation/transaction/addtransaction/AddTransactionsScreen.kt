@@ -634,9 +634,9 @@ fun UserItem(
 fun PreviewAddTransactionContent() {
     val mockUsers = listOf(
         UserUIData(
-            id = 1, fullname = "Iqbal Fauzi", phone = "087822882668", role = "admin",
-            username = "iqbalfauzi",
-            email = "work.iqbalfauzi@gmail.com",
+            id = 1, fullname = "Admin 1", phone = "087822882668", role = "admin",
+            username = "admin1",
+            email = "admin1@pos.com",
             imageProfileUrl = "",
             isActive = true
         ),
