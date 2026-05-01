@@ -317,7 +317,9 @@ fun PreviewTransactionSection() {
             paymentType = "Bank Transfer",
             paymentName = "BCA",
             reportedBy = "Admin 1",
-            confirmedBy = ""
+            confirmedBy = "",
+            userName = "Admin",
+            userId = 1
         ),
         TransactionUiData(
             transactionId = 2,
@@ -329,7 +331,9 @@ fun PreviewTransactionSection() {
             paymentType = "Bank Transfer",
             paymentName = "BCA",
             reportedBy = "Admin 1",
-            confirmedBy = ""
+            confirmedBy = "",
+            userName = "Admin",
+            userId = 1
         ),
         TransactionUiData(
             transactionId = 3,
@@ -341,7 +345,9 @@ fun PreviewTransactionSection() {
             paymentType = "Bank Transfer",
             paymentName = "BCA",
             reportedBy = "Admin 1",
-            confirmedBy = ""
+            confirmedBy = "",
+            userName = "Admin",
+            userId = 1
         )
     )
     PosqTheme(useDynamicColor = false) {

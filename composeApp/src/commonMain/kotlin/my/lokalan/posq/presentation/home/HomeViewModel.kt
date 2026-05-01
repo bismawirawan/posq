@@ -3,6 +3,7 @@ package my.lokalan.posq.presentation.home
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.aakira.napier.log
 import my.posq.data.domain.repository.Repository
 import my.posq.data.local.database.model.PeriodEntity
 import my.posq.data.local.session.Session
@@ -61,17 +62,20 @@ class HomeViewModel(
     }
 
     fun getProfile() {
-        _uiState.update { it.copy(profile = SectionState.Loading) }
+        // indicate loading
+        _uiState.update { it.copy(profile = SectionState.Loading, isLoading = true) }
         repository.getLoginProfile()
             .onEach { response ->
                 when (response) {
                     is Result.Error -> {
-                        _uiState.update { it.copy(profile = SectionState.Error(response.t.message)) }
-                        _errorMessage.update { it }
+                        // mark error state and stop loading
+                        _uiState.update { it.copy(profile = SectionState.Error(response.t.message), isLoading = false) }
+                        _errorMessage.update { response.t.message }
                     }
 
                     is Result.Success -> {
-                        _uiState.update { it.copy(profile = SectionState.Success(response.data.toUiData())) }
+                        // update profile and stop loading
+                        _uiState.update { it.copy(profile = SectionState.Success(response.data.toUiData()), isLoading = false) }
                     }
                 }
             }
@@ -79,12 +83,13 @@ class HomeViewModel(
     }
 
     fun getLocalProfile() {
-        _uiState.update { it.copy(profile = SectionState.Loading) }
+        _uiState.update { it.copy(profile = SectionState.Loading, isLoading = true) }
         viewModelScope.launch {
             session.userProfile.value?.let { userResponse ->
                 _uiState.update {
                     it.copy(
-                        profile = SectionState.Success(userResponse.toUiData())
+                        profile = SectionState.Success(userResponse.toUiData()),
+                        isLoading = false
                     )
                 }
                 if (_userType.value.isNullOrBlank()) {
@@ -95,18 +100,21 @@ class HomeViewModel(
     }
 
     fun getTransactions(periodId: Int? = null) {
-        _uiState.update { it.copy(transactions = SectionState.Loading) }
+        // indicate loading
+        _uiState.update { it.copy(transactions = SectionState.Loading, isLoading = true) }
         repository.getTransactions(periodId)
             .onEach { result ->
                 when (result) {
                     is Result.Error -> {
+                        // set transactions error and stop loading
+                        _uiState.update { it.copy(transactions = SectionState.Error(result.t.message), isLoading = false) }
                         _errorMessage.update { result.t.message }
                     }
 
                     is Result.Success -> {
                         val data = result.data.map { it.toUIData() }
                         _transactions.update { data }
-                        _uiState.update { it.copy(transactions = SectionState.Success(data)) }
+                        _uiState.update { it.copy(transactions = SectionState.Success(data), isLoading = false) }
                     }
                 }
             }

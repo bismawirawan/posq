@@ -9,15 +9,82 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import my.posq.data.local.database.model.PaymentEntity
+import my.posq.data.local.database.model.PeriodEntity
 
 class DatabaseHelper(factory: DriverFactory) {
 
     private val database = PosQDatabase(factory.createDriver())
+    private val paymentQueries = database.paymentQueries
+    private val periodQueries = database.periodsQueries
     private val transactionsQueries = database.transactionsQueries
     private val usersQueries = database.userQueries
 
+    fun insertPayments(list: List<PaymentEntity>) {
+        list.forEach { payment ->
+            paymentQueries.insertPayment(
+                paymentId = payment.paymentId.toLong(),
+                paymentName = payment.paymentName,
+                paymentType = payment.paymentType
+            )
+        }
+    }
+
+    fun clearPayments() = paymentQueries.deleteAllPayments()
+
+    fun deletePaymentById(paymentId: Long) {
+        paymentQueries.deletePaymentById(paymentId)
+    }
+
+    fun deletePaymentByIds(paymentIds: List<Int>) {
+        paymentIds.forEach { deletePaymentById(it.toLong()) }
+    }
+
+    fun getAllPayments() =
+        paymentQueries.selectAllPayments().executeAsList().map { it.toPaymentEntity() }
+
+    fun getAllPaymentsAsFlow(): Flow<List<PaymentEntity>> =
+        paymentQueries.selectAllPayments()
+            .asFlow()
+            .mapToList(Dispatchers.IO)
+            .map { data ->
+                data.map { it.toPaymentEntity() }
+            }
+
+    fun insertPeriods(list: List<PeriodEntity>) {
+        list.forEach { (periodId, periodeName, startDate, endDate) ->
+            periodQueries.insertPeriodData(
+                periodId = periodId.toLong(),
+                periodeName = periodeName,
+                startDate = startDate,
+                endDate = endDate
+            )
+        }
+    }
+
+    fun clearPeriods() = periodQueries.deleteAllPeriodData()
+
+    fun deletePeriodById(periodId: Long) {
+        periodQueries.deletePeriodDataById(periodId)
+    }
+
+    fun deletePeriodByIds(periodIds: List<Int>) {
+        periodIds.forEach { deletePeriodById(it.toLong()) }
+    }
+
+    fun getAllPeriods() =
+        periodQueries.selectAllPeriodData().executeAsList().map { it.toPeriodEntity() }
+
+    fun getAllPeriodsAsFlow(): Flow<List<PeriodEntity>> =
+        periodQueries.selectAllPeriodData()
+            .asFlow()
+            .mapToList(Dispatchers.IO)
+            .map { data ->
+                data.map { it.toPeriodEntity() }
+            }
+
     fun insertTransactions(list: List<TransactionEntity>) {
-        list.forEach { (transactionId, amount, reportedDate, transactionDate, statusTransaksi, buktiTransferUrl, paymentType, paymentName, reportedBy, confirmedBy) ->
+        list.forEach { (transactionId, amount, reportedDate, transactionDate, statusTransaksi, buktiTransferUrl, paymentType, paymentName, reportedBy, confirmedBy, userName, userId) ->
             transactionsQueries.insertTransactionData(
                 transactionId = transactionId.toLong(),
                 amount = amount.toLong(),
@@ -28,7 +95,9 @@ class DatabaseHelper(factory: DriverFactory) {
                 paymentType = paymentType,
                 paymentName = paymentName,
                 reportedBy = reportedBy,
-                confirmedBy = confirmedBy
+                confirmedBy = confirmedBy,
+                userName = userName,
+                userId = userId.toLong()
             )
         }
     }
@@ -51,7 +120,7 @@ class DatabaseHelper(factory: DriverFactory) {
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { data ->
-                data.map { it.toTransactionEntity() }
+                data.map { it.toTransactionEntity() }.sortedByDescending { it.transactionId }
             }
 
     fun insertUsers(list: List<UserEntity>) {

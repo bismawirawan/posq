@@ -23,8 +23,12 @@ import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
+import my.posq.data.network.TokenManager
 
-class ApiService(private val httpClient: HttpClient) {
+class ApiService(
+    private val httpClient: HttpClient,
+    private val tokenManager: TokenManager
+) {
 
     private val authProvider = httpClient.authProvider<BearerAuthProvider>()
 
@@ -35,14 +39,27 @@ class ApiService(private val httpClient: HttpClient) {
                 password = password
             )
         authProvider?.clearToken()
-        return httpClient.post("auth/login") {
+        val response = httpClient.post("auth/login") {
             contentType(ContentType.Application.Json)
             setBody(loginRequest)
-        }.body()
+        }.body<DataResponse<TokenResponse>>()
+
+        // Save token to TokenManager and auth provider after successful login
+        if (response.status && response.data != null) {
+            val accessToken = response.data.accessToken.orEmpty()
+            val refreshToken = response.data.refreshToken.orEmpty()
+
+            if (accessToken.isNotBlank() && refreshToken.isNotBlank()) {
+                tokenManager.saveAccessToken(accessToken)
+                tokenManager.saveRefreshToken(refreshToken)
+            }
+        }
+
+        return response
     }
 
     suspend fun getLoginProfile(): DataResponse<UserResponse> {
-        return httpClient.get("auth/profile").body()
+        return httpClient.get("profile").body()
     }
 
     suspend fun registerUser(
@@ -229,5 +246,48 @@ class ApiService(private val httpClient: HttpClient) {
             contentType(ContentType.Application.Json)
             setBody(requestBody)
         }.body()
+    }
+
+    suspend fun addTransaction(
+        userId: Int?,
+        reportedByUserId: Int?,
+        amount: Double?,
+        transactionDate: String?,
+        periodeId: Int?,
+        paymentId: Int?,
+        file: ByteArray?
+    ): DataResponse<TransactionResponse> {
+        return httpClient.submitFormWithBinaryData(
+            url = "transactions/",
+            formData = formData {
+                // Required Strings
+                userId?.let { append("userId", it.toString()) }
+                reportedByUserId?.let { append("reportedByUserId", it.toString()) }
+                amount?.let { append("amount", it.toString()) }
+                transactionDate?.let { append("transaction_date", it) }
+                periodeId?.let { append("periode_id", it.toString()) }
+                paymentId?.let { append("payment_id", it.toString()) }
+
+                // File Upload
+                if (file != null) {
+                    val safeDate = transactionDate?.replace(":", "")?.replace(" ", "_")
+                        ?.replace("-", "") ?: "date"
+                    append(
+                        key = "file",
+                        value = file,
+                        headers = Headers.build {
+                            append(
+                                HttpHeaders.ContentType,
+                                "image/jpeg"
+                            )
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "filename=\"${userId}_${safeDate}_transaction.jpg\""
+                            )
+                        }
+                    )
+                }
+            }
+        ).body()
     }
 }

@@ -22,11 +22,14 @@ import my.lokalan.posq.presentation.login.LoginScreen
 import my.lokalan.posq.presentation.main.MainScreen
 import my.lokalan.posq.presentation.splash.SplashScreen
 import my.lokalan.posq.presentation.user.adduser.AddUserScreen
+import my.lokalan.posq.presentation.transaction.addtransaction.AddTransactionScreen
 import my.lokalan.posq.ui.theme.PosqTheme
 import my.lokalan.posq.ui.theme.ThemeManager
 import my.lokalan.posq.ui.theme.ThemeMode
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.serialization.json.Json
+import my.lokalan.posq.presentation.transaction.detailtransaction.TransactionDetailScreen
+import my.lokalan.posq.presentation.transaction.model.TransactionUiData
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -89,6 +92,14 @@ fun App() {
                     )
                 }
 
+                composable<Screen.AddTransactionRoute> { backStackEntry ->
+                    val args = backStackEntry.toRoute<Screen.AddTransactionRoute>()
+                    AddTransactionScreen(
+                        navController = rootNavController,
+                        isCollective = args.isCollective
+                    )
+                }
+
                 composable<Screen.AddUserRoute> { backStackEntry ->
                     val args = backStackEntry.toRoute<Screen.AddUserRoute>()
                     AddUserScreen(
@@ -98,26 +109,17 @@ fun App() {
                         isLoginUser = args.isLoginUser
                     )
                 }
+
+                composable<Screen.TransactionDetailRoute> { backStackEntry ->
+                    val args = backStackEntry.toRoute<Screen.TransactionDetailRoute>()
+                    val transaction = Json.decodeFromString<TransactionUiData>(args.transactionJson)
+                    TransactionDetailScreen(
+                        transaction = transaction,
+                        onBackClick = { rootNavController.popBackStack() }
+                    )
+                }
             }
 
         }
     }
-}
-
-inline fun <reified T : Any> serializableType(
-    isNullableAllowed: Boolean = false,
-    json: Json = Json,
-) = object : NavType<T>(isNullableAllowed) {
-
-    override fun put(bundle: SavedState, key: String, value: T) {
-        bundle.write { putString(key, json.encodeToString(value)) }
-    }
-
-    override fun get(bundle: SavedState, key: String): T? {
-        return json.decodeFromString<T?>(bundle.read { getString(key) })
-    }
-
-    override fun parseValue(value: String): T = json.decodeFromString(value)
-
-    override fun serializeAsValue(value: T): String = json.encodeToString(value)
 }

@@ -1,0 +1,21 @@
+CREATE TABLE PaymentData (
+    paymentId INTEGER PRIMARY KEY,
+    paymentName TEXT NOT NULL,
+    paymentType TEXT NOT NULL
+);
+
+insertPayment:
+INSERT OR REPLACE INTO PaymentData(
+    paymentId,
+    paymentName,
+    paymentType
+) VALUES (?, ?, ?);
+
+deletePaymentById:
+DELETE FROM PaymentData WHERE paymentId = ?;
+
+selectAllPayments:
+SELECT * FROM PaymentData;
+
+deleteAllPayments:
+DELETE FROM PaymentData;

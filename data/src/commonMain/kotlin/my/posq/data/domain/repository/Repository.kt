@@ -12,12 +12,14 @@ import kotlinx.coroutines.flow.Flow
 interface Repository {
     fun login(email: String, password: String): Flow<Result<TokenResponse>>
     fun getLoginProfile(): Flow<Result<UserResponse>>
+    fun getPeriods(): Flow<Result<List<PeriodEntity>>>
     fun getTransactions(
         periodId: Int? = null,
         status: String? = null,
         paymentId: Int? = null
     ): Flow<Result<List<TransactionEntity>>>
 
+    fun getPayments(): Flow<Result<List<PaymentEntity>>>
     fun getListUsers(): Flow<Result<List<UserEntity>>>
     fun getUser(userId: Int): Flow<Result<UserEntity>>
     fun getLocalUsers(): Flow<Result<List<UserEntity>>>
@@ -58,4 +60,14 @@ interface Repository {
         newPassword: String,
         confirmNewPassword: String
     ): Flow<Result<Unit>>
+
+    fun addTransaction(
+        userId: Int?,
+        reportedByUserId: Int?,
+        amount: Double?,
+        transactionDate: String?,
+        periodeId: Int?,
+        paymentId: Int?,
+        file: ByteArray?
+    ): Flow<Result<Boolean>>
 }

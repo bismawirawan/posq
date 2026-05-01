@@ -196,11 +196,13 @@ fun PreviewHomeMemberContent() {
                         transactionDate = "2025-08-29T22:15:00.000Z",
                         statusTransaksi = "",
                         reportedDate = "2025-08-29T22:15:00.000Z",
-                        reportedBy = "Admin 1",
-                        confirmedBy = "Admin 1",
+                        reportedBy = "admint",
+                        confirmedBy = "admint",
                         buktiTransferUrl = "",
                         paymentType = "Transfer Bank",
-                        paymentName = "BCA"
+                        paymentName = "BCA",
+                        userName = "admint",
+                        userId = 1
                     )
                 )
             ),

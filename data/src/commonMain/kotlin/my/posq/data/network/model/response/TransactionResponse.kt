@@ -16,6 +16,10 @@ data class TransactionResponse(
     val buktiTransfer: String? = null,
     @SerialName("status")
     val statusTransaksi: String?,
+    @SerialName("user_id")
+    val userId: Int,
+    @SerialName("user")
+    val user: UserResponse? = null,
     @SerialName("reported_date")
     val reportedDate: String,
     @SerialName("reported_by")

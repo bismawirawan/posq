@@ -29,10 +29,13 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import my.posq.data.local.database.model.PaymentEntity
+import my.posq.data.local.database.model.PeriodEntity
+import my.posq.data.mapper.toPaymentEntity
+import my.posq.data.mapper.toPeriodEntity
 
 class RepositoryImpl(
     private val apiService: ApiService,
-    private val json: Json,
     private val session: Session,
     private val tokenManager: TokenManager,
     private val databaseHelper: DatabaseHelper
@@ -44,25 +47,13 @@ class RepositoryImpl(
     ): Flow<Result<T>> = flow {
         try {
             val response = apiCall()
+            val data = response.data
 
-            // Check status first, then check data
-            if (response.status && response.data != null) {
-                onSuccess(response.data)
-                emit(Result.Success(response.data))
+            if (data != null) {
+                onSuccess(data)
+                emit(Result.Success(data))
             } else {
-                // If status is false or data is null, it's an error
-                val errorMessage = response.message ?: "Unknown error occurred"
-                emit(Result.Error(Exception(errorMessage)))
-            }
-        } catch (e: ClientRequestException) {
-            // Handle 4xx errors (like 401 Unauthorized)
-            try {
-                val errorResponse = e.response.body<DataResponse<T>>()
-                val errorMessage = errorResponse.message ?: "Request failed"
-                emit(Result.Error(Exception(errorMessage)))
-            } catch (parseError: Exception) {
-                val message = normalizeErrorMessage(e)
-                emit(Result.Error(Exception(message)))
+                emit(Result.Error(Exception(response.message)))
             }
         } catch (e: JsonConvertException) {
             val message = normalizeErrorMessage(e)
@@ -129,7 +120,7 @@ class RepositoryImpl(
                     session.saveProfile(token.userResponse)
                     session.saveBoolean(SessionKey.IS_LOGGED_IN, true)
                 }
-            },
+            }
         )
     }
 
@@ -163,6 +154,7 @@ class RepositoryImpl(
                     imageProfile
                 )
                 if (response.data != null) {
+                    databaseHelper.insertUsers(listOf(response.data.toUserEntity()))
                     emit(Result.Success(response.data))
                 } else {
                     emit(Result.Error(Exception(response.message)))
@@ -312,6 +304,25 @@ class RepositoryImpl(
         }
     }
 
+    override fun getPeriods(): Flow<Result<List<PeriodEntity>>> {
+        return networkBoundResource(
+            query = { databaseHelper.getAllPeriodsAsFlow() },
+            fetch = { apiService.getPeriods() },
+            saveFetchResult = { networkSource ->
+                val local = databaseHelper.getAllPeriods()
+                val networkIds = networkSource.map { it.periodId }.toSet()
+                val dataToDelete = local
+                    .filter { it.periodId !in networkIds }
+                    .map { it.periodId }
+                databaseHelper.deletePeriodByIds(dataToDelete)
+                databaseHelper.insertPeriods(networkSource)
+            },
+            mapper = {
+                it.map { periodeResponse -> periodeResponse.toPeriodEntity() }
+            }
+        )
+    }
+
     override fun getTransactions(
         periodId: Int?,
         status: String?,
@@ -334,6 +345,27 @@ class RepositoryImpl(
                 it.map { transactionResponse ->
                     transactionResponse.toTransactionEntity()
                 }
+            }
+        )
+    }
+
+    // SQL Delight
+    override fun getPayments(): Flow<Result<List<PaymentEntity>>> {
+        return networkBoundResource(
+            query = { databaseHelper.getAllPaymentsAsFlow() },
+            fetch = { apiService.getPayments() },
+            saveFetchResult = { networkSource ->
+                val local = databaseHelper.getAllPayments()
+                val networkIds = networkSource.map { it.paymentId }.toSet()
+                val dataToDelete = local
+                    .filter { it.paymentId !in networkIds }
+                    .map { it.paymentId }
+
+                databaseHelper.deletePaymentByIds(dataToDelete)
+                databaseHelper.insertPayments(networkSource)
+            },
+            mapper = {
+                it.map { paymentResponse -> paymentResponse.toPaymentEntity() }
             }
         )
     }
@@ -361,4 +393,39 @@ class RepositoryImpl(
         }
     }
 
+    override fun addTransaction(
+        userId: Int?,
+        reportedByUserId: Int?,
+        amount: Double?,
+        transactionDate: String?,
+        periodeId: Int?,
+        paymentId: Int?,
+        file: ByteArray?
+    ): Flow<Result<Boolean>> {
+        return flow {
+            try {
+                val response = apiService.addTransaction(
+                    userId = userId,
+                    reportedByUserId = reportedByUserId,
+                    amount = amount,
+                    transactionDate = transactionDate,
+                    periodeId = periodeId,
+                    paymentId = paymentId,
+                    file = file
+                )
+
+                if (response.data != null) {
+                    emit(Result.Success(true))
+                } else {
+                    emit(Result.Error(Exception(response.message)))
+                }
+            } catch (e: JsonConvertException) {
+                val message = normalizeErrorMessage(e)
+                emit(Result.Error(Exception(message)))
+            } catch (e: Exception) {
+                val message = normalizeErrorMessage(e)
+                emit(Result.Error(Exception(message)))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
 }

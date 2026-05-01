@@ -104,18 +104,9 @@ object HttpClientFactory {
 
             defaultRequest {
                 url(BuildKonfig.BASE_URL)
-            }
-        }
-
-        // Reactive header updates when token changes
-        CoroutineScope(Dispatchers.Default).launch {
-            tokenManager.tokenFlow.collectLatest { token ->
-                client.config {
-                    defaultRequest {
-                        if (token.isNotEmpty()) {
-                            header(HttpHeaders.Authorization, "Bearer $token")
-                        }
-                    }
+                val token = tokenManager.getAccessToken()
+                if (token.isNotEmpty()) {
+                    header(HttpHeaders.Authorization, "Bearer $token")
                 }
             }
         }

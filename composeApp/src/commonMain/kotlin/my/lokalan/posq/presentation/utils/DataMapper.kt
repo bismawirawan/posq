@@ -1,9 +1,11 @@
 package my.lokalan.posq.presentation.utils
 
+import my.lokalan.posq.presentation.transaction.model.PaymentUIData
 import my.lokalan.posq.presentation.transaction.model.TransactionUiData
 import my.posq.data.local.database.model.UserEntity
 import my.posq.data.network.model.response.UserResponse
 import my.lokalan.posq.presentation.user.model.UserUIData
+import my.posq.data.local.database.model.PaymentEntity
 import my.posq.data.local.database.model.TransactionEntity
 
 fun UserResponse.toUiData(): UserUIData {
@@ -43,6 +45,16 @@ fun TransactionEntity.toUIData(): TransactionUiData {
         reportedBy = this.reportedBy,
         confirmedBy = this.confirmedBy,
         paymentType = this.paymentType,
-        paymentName = this.paymentName
+        paymentName = this.paymentName,
+        userName = this.userName,
+        userId = this.userId
+    )
+}
+
+fun PaymentEntity.toUIData(): PaymentUIData {
+    return PaymentUIData(
+        id = paymentId,
+        paymentName = paymentName,
+        paymentType = paymentType
     )
 }
