@@ -41,7 +41,6 @@ import my.lokalan.posq.ui.component.PosqScaffold
 import my.lokalan.posq.ui.component.ToastManager
 import my.lokalan.posq.ui.component.ToastType
 import my.lokalan.posq.ui.theme.PosqTheme
-import my.posq.shared.TextSecondaryDark
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -76,7 +75,7 @@ fun LoginScreen(
     LaunchedEffect(errorMessage) {
         if (!errorMessage.isNullOrEmpty()) {
             ToastManager.show(message = errorMessage.orEmpty(), type = ToastType.Error)
-            viewModel.clearError() // Only if you have this in your VM
+            viewModel.clearError()
         }
     }
 
@@ -110,7 +109,7 @@ fun LoginContent(
                         end = Offset(
                             0f,
                             Float.POSITIVE_INFINITY
-                        ) // Bottom-right
+                        )
                     )
                 )
                 .imePadding(),

@@ -19,6 +19,9 @@ sealed class Screen {
     object LoginRoute
 
     @Serializable
+    object MainMenuRoute
+
+    @Serializable
     object MainRoute {
         const val ROUTE = "main_route"
     }

@@ -28,6 +28,7 @@ import my.lokalan.posq.ui.theme.ThemeManager
 import my.lokalan.posq.ui.theme.ThemeMode
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.serialization.json.Json
+import my.lokalan.posq.presentation.main.MainMenuScreen
 import my.lokalan.posq.presentation.transaction.detailtransaction.TransactionDetailScreen
 import my.lokalan.posq.presentation.transaction.model.TransactionUiData
 import org.koin.compose.koinInject
@@ -83,6 +84,10 @@ fun App() {
 
                 composable<Screen.LoginRoute> {
                     LoginScreen(rootNavController)
+                }
+
+                composable<Screen.MainMenuRoute> {
+                    MainMenuScreen(rootNavController)
                 }
 
                 // MAIN CONTENT AREA (Persistent)
