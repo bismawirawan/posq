@@ -48,6 +48,8 @@ import my.lokalan.posq.presentation.user.model.UserUIData
 import my.lokalan.posq.ui.component.BasicImage
 import my.lokalan.posq.ui.component.CardMenu
 import my.lokalan.posq.ui.component.PosqScaffold
+import my.lokalan.posq.ui.component.ToastManager
+import my.lokalan.posq.ui.component.ToastType
 import my.lokalan.posq.ui.theme.PosqTheme
 import my.lokalan.posq.ui.utils.ImageSourceUtils
 import my.posq.shared.PosqTypography
@@ -83,22 +85,25 @@ fun MainMenuScreen(
             when (menuId) {
                 "transaksi" -> {
                     // Navigate to Add Transaction screen
-                    navHostController.navigate(Screen.AddTransactionRoute(isCollective = false))
+//                    navHostController.navigate(Screen.TransactionRoute)
+                    ToastManager.show(message = "Masih dalam tahap pengerjaan", type = ToastType.Error)
                 }
 
                 "tabungan" -> {
                     // Navigate to savings/transaction screen
-                    navHostController.navigate(Screen.AddTransactionRoute(isCollective = true))
+                    navHostController.navigate(Screen.TransactionRoute)
                 }
 
                 "anggota" -> {
                     // Navigate to member list screen
-                    navHostController.navigate(Screen.ListUserRoute)
+//                    navHostController.navigate(Screen.ListUserRoute)
+                    ToastManager.show(message = "Masih dalam tahap pengerjaan", type = ToastType.Error)
                 }
 
                 "laporan" -> {
                     // Navigate to home/report screen
-                    navHostController.navigate(Screen.HomeRoute(justLogin = false))
+//                    navHostController.navigate(Screen.HomeRoute(justLogin = false))
+                    ToastManager.show(message = "Masih dalam tahap pengerjaan", type = ToastType.Error)
                 }
 
                 "pengaturan" -> {
@@ -113,7 +118,8 @@ fun MainMenuScreen(
                 "bantuan" -> {
                     // You can navigate to help screen or show a dialog
                     // For now, navigate to MainMenu as placeholder
-                    navHostController.navigate(Screen.MainMenuRoute)
+//                    navHostController.navigate(Screen.MainMenuRoute)
+                    ToastManager.show(message = "Masih dalam tahap pengerjaan", type = ToastType.Error)
                 }
             }
         }

@@ -62,7 +62,6 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun TransactionScreen(
-    rootNavController: NavHostController,
     navHostController: NavHostController,
     viewModel: TransactionViewModel = koinViewModel()
 ) {
@@ -88,7 +87,7 @@ fun TransactionScreen(
         onSelectUser = { viewModel.onEvent(TransactionEvent.SelectUser(it)) },
         onTransactionClick = { transaction ->
             val transactionJson = Json.encodeToString(transaction)
-            rootNavController.navigate(Screen.TransactionDetailRoute(transactionJson))
+            navHostController.navigate(Screen.TransactionDetailRoute(transactionJson))
         },
         onAddTransaction = {
             navHostController.navigate(Screen.AddTransactionRoute(isCollective = false))

@@ -21,7 +21,6 @@ fun TransactionNavHost(navController: NavHostController, rootNavController: NavH
         composable(Screen.BottomNavItem.TRANSACTION) {
             TransactionScreen(
                 navHostController = navController,
-                rootNavController = rootNavController,
             )
         }
 
