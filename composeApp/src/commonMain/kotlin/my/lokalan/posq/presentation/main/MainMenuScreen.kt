@@ -1,13 +1,17 @@
 package my.lokalan.posq.presentation.main
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -20,9 +24,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.HelpOutline
-import androidx.compose.material.icons.filled.Savings
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -36,8 +40,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import my.lokalan.posq.navigation.Screen
@@ -52,11 +59,13 @@ import my.lokalan.posq.ui.component.ToastManager
 import my.lokalan.posq.ui.component.ToastType
 import my.lokalan.posq.ui.theme.PosqTheme
 import my.lokalan.posq.ui.utils.ImageSourceUtils
+import my.posq.shared.BgColorScreen
 import my.posq.shared.PosqTypography
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import posq.composeapp.generated.resources.Res
+import posq.composeapp.generated.resources.bg_screen_green
 import posq.composeapp.generated.resources.ic_noimage
 
 data class MenuItem(
@@ -86,40 +95,56 @@ fun MainMenuScreen(
                 "transaksi" -> {
                     // Navigate to Add Transaction screen
 //                    navHostController.navigate(Screen.TransactionRoute)
-                    ToastManager.show(message = "Masih dalam tahap pengerjaan", type = ToastType.Error)
+                    ToastManager.show(
+                        message = "Masih dalam tahap pengerjaan",
+                        type = ToastType.Error
+                    )
                 }
 
                 "tabungan" -> {
-                    // Navigate to savings/transaction screen
-                    navHostController.navigate(Screen.TransactionRoute)
+                    // Navigate to savings screen
+                    navHostController.navigate(Screen.SavingsRoute)
                 }
 
                 "anggota" -> {
                     // Navigate to member list screen
 //                    navHostController.navigate(Screen.ListUserRoute)
-                    ToastManager.show(message = "Masih dalam tahap pengerjaan", type = ToastType.Error)
+                    ToastManager.show(
+                        message = "Masih dalam tahap pengerjaan",
+                        type = ToastType.Error
+                    )
                 }
 
                 "laporan" -> {
-                    // Navigate to home/report screen
+                    // Navigate to report screen
 //                    navHostController.navigate(Screen.HomeRoute(justLogin = false))
-                    ToastManager.show(message = "Masih dalam tahap pengerjaan", type = ToastType.Error)
+                    ToastManager.show(
+                        message = "Masih dalam tahap pengerjaan",
+                        type = ToastType.Error
+                    )
                 }
 
                 "pengaturan" -> {
                     // Navigate to profile/settings screen
                     // Get user ID from current user profile
-                    val userId = (uiState.profile as? SectionState.Success)?.data?.id ?: 0
-                    navHostController.navigate(
-                        Screen.EditProfileRoute(userId = userId, isLoginUser = true)
+                    ToastManager.show(
+                        message = "Masih dalam tahap pengerjaan",
+                        type = ToastType.Error
                     )
+//                    val userId = (uiState.profile as? SectionState.Success)?.data?.id ?: 0
+//                    navHostController.navigate(
+//                        Screen.EditProfileRoute(userId = userId, isLoginUser = true)
+//                    )
                 }
 
                 "bantuan" -> {
                     // You can navigate to help screen or show a dialog
                     // For now, navigate to MainMenu as placeholder
 //                    navHostController.navigate(Screen.MainMenuRoute)
-                    ToastManager.show(message = "Masih dalam tahap pengerjaan", type = ToastType.Error)
+                    ToastManager.show(
+                        message = "Masih dalam tahap pengerjaan",
+                        type = ToastType.Error
+                    )
                 }
             }
         }
@@ -177,62 +202,90 @@ fun MainMenuContent(
             state = refreshState,
             modifier = Modifier
         ) {
-            Column(
+            ConstraintLayout(
                 modifier = Modifier
                     .fillMaxSize()
-                    .windowInsetsPadding(WindowInsets.statusBars),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .background(BgColorScreen)
+                    .imePadding()
             ) {
-                // Header dengan text dan profile image
-                Row(
+                val (menuRef, yearRef) = createRefs()
+                Image(
+                    painter = painterResource(Res.drawable.bg_screen_green),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp,
-                            bottom = 10.dp,
-                            start = 16.dp,
-                            end = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                        .fillMaxSize()
+                        .graphicsLayer(alpha = 0.45f),
+                )
+                Column(
+                    modifier = Modifier
+                        .constrainAs(menuRef) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                        .windowInsetsPadding(WindowInsets.statusBars),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = "Dashboard",
-                        style = PosqTypography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-
-                    BasicImage(
-                        model = (uiState.profile as? SectionState.Success)?.data?.imageProfileUrl.orEmpty(),
+                    // Header dengan text dan profile image
+                    Row(
                         modifier = Modifier
-                            .size(48.dp)
-                            .clip(CircleShape)
-                            .clickable {
-                                onClickProfile()
-                            },
-                        placeholder = painterResource(Res.drawable.ic_noimage),
-                        error = painterResource(Res.drawable.ic_noimage)
-                    )
-                }
-
-                // Grid Menu dengan 2 kolom
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(menuItems) { menuItem ->
-                        CardMenu(
-                            title = menuItem.title,
-                            source = menuItem.imageSource,
-                            onClick = menuItem.onClick,
-                            modifier = Modifier.fillMaxWidth()
+                            .fillMaxWidth()
+                            .padding(
+                                top = 10.dp,
+                                bottom = 10.dp,
+                                start = 16.dp,
+                                end = 16.dp
+                            ),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Dashboard",
+                            style = PosqTypography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold
+                            )
                         )
+
+                        BasicImage(
+                            model = (uiState.profile as? SectionState.Success)?.data?.imageProfileUrl.orEmpty(),
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(CircleShape)
+                                .clickable {
+                                    onClickProfile()
+                                },
+                            placeholder = painterResource(Res.drawable.ic_noimage),
+                            error = painterResource(Res.drawable.ic_noimage)
+                        )
+                    }
+
+                    // Grid Menu dengan 2 kolom
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(menuItems) { menuItem ->
+                            CardMenu(
+                                title = menuItem.title,
+                                source = menuItem.imageSource,
+                                onClick = menuItem.onClick,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
                     }
                 }
 
                 Text(
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .constrainAs(yearRef) {
+                            bottom.linkTo(parent.bottom, margin = 16.dp)
+                            centerHorizontallyTo(parent)
+                        },
                     text = "PosQⓒ2026",
                     style = PosqTypography.titleSmall.copy(
                         fontWeight = FontWeight.Medium
@@ -241,7 +294,6 @@ fun MainMenuContent(
                 )
             }
         }
-
     }
 }
 
@@ -257,7 +309,7 @@ private fun getDefaultMenuItems(onMenuClick: (String) -> Unit = {}): List<MenuIt
         MenuItem(
             id = "tabungan",
             title = "Tabungan",
-            imageSource = ImageSourceUtils.Icon(Icons.Default.Savings),
+            imageSource = ImageSourceUtils.Icon(Icons.Default.Wallet),
             onClick = { onMenuClick("tabungan") }
         ),
         MenuItem(

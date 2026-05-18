@@ -42,6 +42,9 @@ sealed class Screen {
     object TransactionRoute
 
     @Serializable
+    object SavingsRoute
+
+    @Serializable
     data class AddTransactionRoute(val isCollective: Boolean = false)
 
     @Serializable

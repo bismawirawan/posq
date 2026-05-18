@@ -31,3 +31,5 @@ val TextBodyColor = Color.DarkGray
 val TargetColor = Color.Gray
 val BackgroundColor = Color.White
 val CurrentPeriodBoxColor = Color(0xFFE6E6FA) // A light purple
+
+val BgColorScreen = Color(0xFFE4E9E1)

@@ -1,4 +1,4 @@
-package my.lokalan.posq.presentation.transaction
+package my.lokalan.posq.presentation.savings
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -36,13 +36,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import my.posq.data.local.database.model.PeriodEntity
-import my.posq.shared.BgColorScreen
-import my.posq.shared.INDONESIA_TRIMMED
-import my.posq.shared.PosqTypography
-import my.posq.shared.formatDateRange
+import kotlinx.serialization.json.Json
 import my.lokalan.posq.navigation.Screen
 import my.lokalan.posq.presentation.home.SectionState
+import my.lokalan.posq.presentation.transaction.TransactionEvent
+import my.lokalan.posq.presentation.transaction.TransactionViewModel
 import my.lokalan.posq.presentation.transaction.model.TransactionUiData
 import my.lokalan.posq.presentation.user.model.UserUIData
 import my.lokalan.posq.ui.component.PosqScaffold
@@ -51,12 +49,16 @@ import my.lokalan.posq.ui.component.TextButtonOption
 import my.lokalan.posq.ui.section.ListUserSheet
 import my.lokalan.posq.ui.section.PeriodsSheet
 import my.lokalan.posq.ui.theme.PosqTheme
-import kotlinx.serialization.json.Json
+import my.posq.data.local.database.model.PeriodEntity
+import my.posq.shared.BgColorScreen
+import my.posq.shared.INDONESIA_TRIMMED
+import my.posq.shared.PosqTypography
+import my.posq.shared.formatDateRange
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun TransactionScreen(
+fun SavingsScreen(
     navHostController: NavHostController,
     viewModel: TransactionViewModel = koinViewModel()
 ) {
@@ -66,33 +68,33 @@ fun TransactionScreen(
     val periodsList = (uiState.periods as? SectionState.Success)?.data ?: emptyList()
 
     TransactionContent(
-        isLoading = uiState.isLoading,
-        onBackClick = { navHostController.popBackStack() },
-        onRefresh = {
-            viewModel.onEvent(TransactionEvent.GetPeriods)
-            viewModel.onEvent(TransactionEvent.GetUsers)
-            viewModel.onEvent(
-                TransactionEvent.GetTransactions(
-                    uiState.selectedPeriod?.periodId,
-                    uiState.selectedUser?.id
-                )
+    isLoading = uiState.isLoading,
+    onBackClick = { navHostController.popBackStack() },
+    onRefresh = {
+        viewModel.onEvent(TransactionEvent.GetPeriods)
+        viewModel.onEvent(TransactionEvent.GetUsers)
+        viewModel.onEvent(
+            TransactionEvent.GetTransactions(
+                uiState.selectedPeriod?.periodId,
+                uiState.selectedUser?.id
             )
-        },
-        selectedPeriod = uiState.selectedPeriod,
-        onPeriodChange = { viewModel.onEvent(TransactionEvent.SelectPeriod(it)) },
-        periods = periodsList,
-        transactions = transactionsList,
-        onFetchAllTransaction = { viewModel.onEvent(TransactionEvent.GetTransactions()) },
-        selectedUser = uiState.selectedUser,
-        users = uiState.users,
-        onSelectUser = { viewModel.onEvent(TransactionEvent.SelectUser(it)) },
-        onTransactionClick = { transaction ->
-            val transactionJson = Json.encodeToString(transaction)
-            navHostController.navigate(Screen.TransactionDetailRoute(transactionJson))
-        },
-        onAddTransaction = {
-            navHostController.navigate(Screen.AddTransactionRoute(isCollective = false))
-        }
+        )
+    },
+    selectedPeriod = uiState.selectedPeriod,
+    onPeriodChange = { viewModel.onEvent(TransactionEvent.SelectPeriod(it)) },
+    periods = periodsList,
+    transactions = transactionsList,
+    onFetchAllTransaction = { viewModel.onEvent(TransactionEvent.GetTransactions()) },
+    selectedUser = uiState.selectedUser,
+    users = uiState.users,
+    onSelectUser = { viewModel.onEvent(TransactionEvent.SelectUser(it)) },
+    onTransactionClick = { transaction ->
+        val transactionJson = Json.encodeToString(transaction)
+        navHostController.navigate(Screen.TransactionDetailRoute(transactionJson))
+    },
+    onAddTransaction = {
+        navHostController.navigate(Screen.AddTransactionRoute(isCollective = false))
+    }
     )
 }
 
@@ -155,7 +157,7 @@ fun TransactionContent(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(text = "Riwayat Transaksi", style = PosqTypography.titleLarge)
+                    Text(text = "Riwayat Tabungan", style = PosqTypography.titleLarge)
                 },
                 modifier = Modifier,
                 navigationIcon = {
@@ -220,19 +222,6 @@ fun TransactionContent(
                         }
                     }
 
-                    TextButtonOption(
-                        text = selectedUser?.fullname ?: "Semua Pengguna",
-                        placeholder = "Pilih Pengguna",
-                        modifier = Modifier.constrainAs(chooseUserRef) {
-                            top.linkTo(filterRef.bottom, 8.dp)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                            width = Dimension.fillToConstraints
-                        },
-                    ) {
-                        showUserSheet = true
-                    }
-
                     AnimatedVisibility(
                         visible = transactions.isEmpty(),
                         modifier = Modifier.constrainAs(emptyRef) {
@@ -242,7 +231,7 @@ fun TransactionContent(
                             end.linkTo(parent.end)
                         }
                     ) {
-                        EmptyTransaction(modifier = Modifier, onAddTransaction = onAddTransaction)
+                        EmptySavings(modifier = Modifier, onAddTransaction = onAddTransaction)
                     }
 
                     AnimatedVisibility(
@@ -255,7 +244,7 @@ fun TransactionContent(
                             height = Dimension.fillToConstraints
                         }
                     ) {
-                        TransactionSection(
+                        SavingsSection(
                             modifier = Modifier,
                             showAllTransaction = true,
                             transactions = transactions,

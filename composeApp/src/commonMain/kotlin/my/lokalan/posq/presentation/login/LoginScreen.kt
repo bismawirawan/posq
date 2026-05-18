@@ -41,6 +41,7 @@ import my.lokalan.posq.ui.component.PosqScaffold
 import my.lokalan.posq.ui.component.ToastManager
 import my.lokalan.posq.ui.component.ToastType
 import my.lokalan.posq.ui.theme.PosqTheme
+import my.posq.shared.BgColorScreen
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -102,16 +103,7 @@ fun LoginContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    Brush.linearGradient(
-                        colors = listOf(SageDark, Color.White),
-                        start = Offset(0f, 0f), // Top-left
-                        end = Offset(
-                            0f,
-                            Float.POSITIVE_INFINITY
-                        )
-                    )
-                )
+                .background(BgColorScreen)
                 .imePadding(),
             contentAlignment = Alignment.Center
         ) {

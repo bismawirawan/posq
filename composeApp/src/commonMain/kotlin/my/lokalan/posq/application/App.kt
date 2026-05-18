@@ -29,6 +29,7 @@ import my.lokalan.posq.ui.theme.ThemeMode
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.serialization.json.Json
 import my.lokalan.posq.presentation.main.MainMenuScreen
+import my.lokalan.posq.presentation.savings.SavingsScreen
 import my.lokalan.posq.presentation.transaction.TransactionScreen
 import my.lokalan.posq.presentation.transaction.detailtransaction.TransactionDetailScreen
 import my.lokalan.posq.presentation.transaction.model.TransactionUiData
@@ -93,6 +94,10 @@ fun App() {
 
                 composable<Screen.TransactionRoute> {
                     TransactionScreen(rootNavController)
+                }
+
+                composable<Screen.SavingsRoute> {
+                    SavingsScreen(rootNavController)
                 }
 
                 // MAIN CONTENT AREA (Persistent)

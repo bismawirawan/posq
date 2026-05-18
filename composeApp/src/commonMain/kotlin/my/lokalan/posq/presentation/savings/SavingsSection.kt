@@ -1,4 +1,4 @@
-package my.lokalan.posq.presentation.transaction
+package my.lokalan.posq.presentation.savings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +25,7 @@ import my.lokalan.posq.presentation.transaction.model.TransactionUiData
 import my.lokalan.posq.ui.component.TransactionItem
 
 @Composable
-fun TransactionSection(
+fun SavingsSection(
     modifier: Modifier = Modifier,
     showAllTransaction: Boolean = false,
     transactions: List<TransactionUiData>,
@@ -37,9 +37,9 @@ fun TransactionSection(
     val displayTransactions = if (showAllTransaction) transactions else transactions.take(3)
 
     LazyColumn(
-        modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+    horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(displayTransactions) { transaction ->
             TransactionItem(
@@ -62,7 +62,7 @@ fun TransactionSection(
                         },
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("Semua transaksi", style = PosqTypography.bodySmall)
+                    Text("Semua tabungan", style = PosqTypography.bodySmall)
                     Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)
                 }
             }
@@ -71,7 +71,7 @@ fun TransactionSection(
 }
 
 @Composable
-fun EmptyTransaction(modifier: Modifier = Modifier, onAddTransaction: () -> Unit) {
+fun EmptySavings(modifier: Modifier = Modifier, onAddTransaction: () -> Unit) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -83,14 +83,14 @@ fun EmptyTransaction(modifier: Modifier = Modifier, onAddTransaction: () -> Unit
             modifier = Modifier.size(128.dp)
         )
         Text(
-            text = "Belum ada data transaksi",
+            text = "Belum ada data tabungan",
             style = PosqTypography.titleLarge.copy(
                 textAlign = TextAlign.Center
             ),
             modifier = Modifier.fillMaxWidth()
         )
         Text(
-            text = "Semua transaksi akan muncul disini.",
+            text = "Semua tabungan akan muncul disini.",
             style = PosqTypography.bodyMedium.copy(
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Normal
@@ -102,7 +102,7 @@ fun EmptyTransaction(modifier: Modifier = Modifier, onAddTransaction: () -> Unit
             modifier = Modifier
         ) {
             Text(
-                text = "Tambah Transaksi",
+                text = "Tambah Tabungan",
             )
         }
     }
