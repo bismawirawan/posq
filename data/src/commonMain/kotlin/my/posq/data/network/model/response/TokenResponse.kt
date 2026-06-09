@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TokenResponse(
-    @SerialName("success")
-    val success: String? = null,
+    @SerialName("status")
+    val status: Boolean? = null,
     @SerialName("message")
     val message: String? = null,
     @SerialName("access_token")

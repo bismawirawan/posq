@@ -21,11 +21,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.StickyNote2
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.StickyNote2
 import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -325,6 +327,12 @@ private fun getDefaultMenuItems(onMenuClick: (String) -> Unit = {}): List<MenuIt
             onClick = { onMenuClick("laporan") }
         ),
         MenuItem(
+            id = "catatan",
+            title = "Catatan",
+            imageSource = ImageSourceUtils.Icon(Icons.AutoMirrored.Default.StickyNote2),
+            onClick = { onMenuClick("catatan") }
+        ),
+        MenuItem(
             id = "pengaturan",
             title = "Pengaturan",
             imageSource = ImageSourceUtils.Icon(Icons.Default.Settings),
@@ -417,6 +425,9 @@ fun MainMenuContentPreview() {
                         imageProfileUrl = "",
                         isActive = true
                     )
+                ),
+                savings = SectionState.Success(
+                    data = listOf()
                 ),
                 transactions = SectionState.Success(
                     data = listOf()

@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-open class TokenManager(): KoinComponent {
+open class TokenManager : KoinComponent {
 
     private val session: Session by inject()
 
     private val _tokenFlow = MutableStateFlow(session.getString(SessionKey.TOKEN_KEY))
     val tokenFlow: StateFlow<String> = _tokenFlow
-//
+
     private val _refreshTokenFlow =
         MutableStateFlow(session.getString(SessionKey.REFRESH_TOKEN_KEY))
     val refreshTokenFlow: StateFlow<String> = _refreshTokenFlow

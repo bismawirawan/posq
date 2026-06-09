@@ -24,6 +24,7 @@ import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import my.posq.data.network.TokenManager
+import my.posq.data.network.model.response.SavingsResponse
 
 class ApiService(
     private val httpClient: HttpClient,
@@ -68,7 +69,7 @@ class ApiService(
         email: String,
         phone: String?,
         password: String,
-        role: String,
+        userType: String,
         imageProfile: ByteArray?
     ): DataResponse<UserResponse> {
         return httpClient.submitFormWithBinaryData(
@@ -82,7 +83,7 @@ class ApiService(
 
                 // Optional Strings (Only append if not null)
                 phone?.let { append("phone_number", it) }
-                append("user_type", role)
+                append("user_type", userType)
 
                 // File Upload (image_profile)
                 if (imageProfile != null) {
@@ -289,5 +290,15 @@ class ApiService(
                 }
             }
         ).body()
+    }
+
+    suspend fun getSavings(id: Int?): DataResponse<List<SavingsResponse>> {
+        return httpClient.get("savings"){
+            url {
+                id?.let {
+                    parameters.append("user_id", it.toString())
+                }
+            }
+        }.body()
     }
 }

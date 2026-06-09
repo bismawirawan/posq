@@ -42,6 +42,7 @@ class HomeViewModel(
     private val _uiState = MutableStateFlow(
         HomeUiState(
             profile = SectionState.Loading,
+            savings = SectionState.Loading,
             transactions = SectionState.Loading,
             isLoading = true
         )

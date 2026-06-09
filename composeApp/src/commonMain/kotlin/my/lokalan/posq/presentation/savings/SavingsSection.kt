@@ -20,39 +20,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import my.lokalan.posq.presentation.savings.model.SavingsUiData
+import my.lokalan.posq.ui.component.SavingsItem
 import my.posq.shared.PosqTypography
-import my.lokalan.posq.presentation.transaction.model.TransactionUiData
-import my.lokalan.posq.ui.component.TransactionItem
 
 @Composable
 fun SavingsSection(
     modifier: Modifier = Modifier,
-    showAllTransaction: Boolean = false,
-    transactions: List<TransactionUiData>,
-    onAddTransaction: () -> Unit,
+    showAllSavings: Boolean = false,
+    savings: List<SavingsUiData>,
+    onAddSavings: () -> Unit,
     onClickSeeMore: () -> Unit,
-    onTransactionClick: (TransactionUiData) -> Unit = {}
+    onSavingsClick: (SavingsUiData) -> Unit = {}
 ) {
 
-    val displayTransactions = if (showAllTransaction) transactions else transactions.take(3)
+    val displaySavings = if (showAllSavings) savings else savings.take(3)
 
     LazyColumn(
     modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
     verticalArrangement = Arrangement.spacedBy(8.dp),
     horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        items(displayTransactions) { transaction ->
-            TransactionItem(
+        items(displaySavings) { saving ->
+            SavingsItem(
                 modifier = Modifier.fillMaxWidth(),
-                username = transaction.userName,
-                paymentName = transaction.paymentName,
-                paymentMethod = transaction.paymentType,
-                date = transaction.transactionDate,
-                amount = transaction.amount,
-                onClick = { onTransactionClick(transaction) }
+                savingsDate = saving.savingsDate,
+                savingsType = saving.savingsType,
+                amount = saving.amount,
+                note = saving.note,
+                onClick = { onSavingsClick(saving) }
             )
         }
-        if (!showAllTransaction) {
+        if (!showAllSavings) {
             item {
                 Column(
                     modifier = Modifier

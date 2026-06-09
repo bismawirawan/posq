@@ -146,6 +146,16 @@ fun LocalDate.toIndonesianDateFormat(): String {
     return "$dayOfWeek, $day $month ${this.year}"
 }
 
+fun extractMonthNumber(dateString: String): String {
+    return try {
+        val date = LocalDate.parse(dateString)
+        date.month.number.toString().padStart(2, '0')
+    } catch (e: Exception) {
+        println("Error parsing date: ${e.message}")
+        "00"
+    }
+}
+
 @OptIn(ExperimentalTime::class)
 val currentDate = Clock.System.todayIn(TimeZone.currentSystemDefault())
 

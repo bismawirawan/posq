@@ -1,0 +1,27 @@
+CREATE TABLE SavingsData (
+  savingsId INTEGER PRIMARY KEY,
+  amount INTEGER NOT NULL,
+  note TEXT NOT NULL,
+  savingsDate TEXT NOT NULL,
+  savingsType TEXT NOT NULL,
+  userId INTEGER
+);
+
+insertSavings:
+INSERT OR REPLACE INTO SavingsData(
+    savingsId,
+    amount,
+    note,
+    savingsDate,
+    savingsType,
+    userId
+) VALUES (?, ?, ?, ?,?,?);
+
+deleteSavingsById:
+DELETE FROM SavingsData WHERE savingsId = ?;
+
+selectAllSavings:
+SELECT * FROM SavingsData;
+
+deleteAllSavings:
+DELETE FROM SavingsData;

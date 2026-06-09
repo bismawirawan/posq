@@ -2,10 +2,12 @@ package my.posq.data.mapper
 
 import my.posq.data.local.database.model.PaymentEntity
 import my.posq.data.local.database.model.PeriodEntity
+import my.posq.data.local.database.model.SavingsEntity
 import my.posq.data.local.database.model.TransactionEntity
 import my.posq.data.local.database.model.UserEntity
 import my.posq.data.network.model.response.PaymentResponse
 import my.posq.data.network.model.response.PeriodeResponse
+import my.posq.data.network.model.response.SavingsResponse
 import my.posq.data.network.model.response.TransactionResponse
 import my.posq.data.network.model.response.UserResponse
 import kotlin.text.toInt
@@ -53,5 +55,16 @@ fun PaymentResponse.toPaymentEntity(): PaymentEntity {
         paymentId = id,
         paymentName = paymentName,
         paymentType = paymentType,
+    )
+}
+
+fun SavingsResponse.toSavingsEntity(): SavingsEntity {
+    return SavingsEntity(
+        savingsId = id,
+        amount = amount.toInt(),
+        note = note,
+        savingsDate = savingsDate,
+        savingsType = savingsType,
+        userId = userId
     )
 }

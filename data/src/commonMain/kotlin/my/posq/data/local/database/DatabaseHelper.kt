@@ -11,12 +11,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import my.posq.data.local.database.model.PaymentEntity
 import my.posq.data.local.database.model.PeriodEntity
+import my.posq.data.local.database.model.SavingsEntity
 
 class DatabaseHelper(factory: DriverFactory) {
 
     private val database = PosQDatabase(factory.createDriver())
     private val paymentQueries = database.paymentQueries
     private val periodQueries = database.periodsQueries
+    private val savingsQueries = database.savingsQueries
     private val transactionsQueries = database.transactionsQueries
     private val usersQueries = database.userQueries
 
@@ -162,5 +164,39 @@ class DatabaseHelper(factory: DriverFactory) {
                 data.map { it.toUserEntity() }
             }
     }
+
+    fun insertSavings(list: List<SavingsEntity>) {
+        list.forEach { (savingsId, amount, note, savingsDate, savingsType, userId) ->
+            savingsQueries.insertSavings(
+                savingsId = savingsId.toLong(),
+                amount = amount.toLong(),
+                note = note,
+                savingsDate = savingsDate,
+                savingsType = savingsType,
+                userId = userId.toLong()
+            )
+        }
+    }
+
+    fun clearSavings() = savingsQueries.deleteAllSavings()
+
+    fun deleteSavingsById(id: Long) {
+        savingsQueries.deleteSavingsById(id)
+    }
+
+    fun deleteSavingsByIds(ids: List<Int>) {
+        ids.forEach { deleteSavingsById(it.toLong()) }
+    }
+
+    fun getAllSavings() = savingsQueries.selectAllSavings().executeAsList()
+        .map { it.toSavingsEntity() }
+
+    fun getAllSavingsAsFlow(): Flow<List<SavingsEntity>> =
+        savingsQueries.selectAllSavings()
+            .asFlow()
+            .mapToList(Dispatchers.IO)
+            .map { data ->
+                data.map { it.toSavingsEntity() }.sortedByDescending { it.savingsId }
+            }
 
 }

@@ -3,6 +3,7 @@ package my.lokalan.posq.di
 import my.lokalan.posq.presentation.home.HomeViewModel
 import my.lokalan.posq.presentation.home.member.MemberDetailViewModel
 import my.lokalan.posq.presentation.login.LoginViewModel
+import my.lokalan.posq.presentation.savings.SavingsViewModel
 import my.lokalan.posq.presentation.splash.SplashViewModel
 import my.lokalan.posq.presentation.transaction.TransactionViewModel
 import my.lokalan.posq.presentation.transaction.addtransaction.AddTransactionViewModel
@@ -25,5 +26,6 @@ val viewModelModule = module {
     viewModelOf(::MemberDetailViewModel)
     viewModelOf(::ChangePasswordViewModel)
     viewModelOf(::TransactionViewModel)
+    viewModelOf(::SavingsViewModel)
     viewModelOf(::AddTransactionViewModel)
 }

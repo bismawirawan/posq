@@ -8,6 +8,7 @@ import my.posq.data.network.api.Result
 import my.posq.data.network.model.response.TokenResponse
 import my.posq.data.network.model.response.UserResponse
 import kotlinx.coroutines.flow.Flow
+import my.posq.data.local.database.model.SavingsEntity
 
 interface Repository {
     fun login(email: String, password: String): Flow<Result<TokenResponse>>
@@ -20,6 +21,7 @@ interface Repository {
     ): Flow<Result<List<TransactionEntity>>>
 
     fun getPayments(): Flow<Result<List<PaymentEntity>>>
+    fun getSavings(userId: Int? = null): Flow<Result<List<SavingsEntity>>>
     fun getListUsers(): Flow<Result<List<UserEntity>>>
     fun getUser(userId: Int): Flow<Result<UserEntity>>
     fun getLocalUsers(): Flow<Result<List<UserEntity>>>

@@ -198,6 +198,9 @@ fun PreviewHomeContent() {
                     isActive = true
                 )
             ),
+            savings = SectionState.Success(
+                data = listOf()
+            ),
             transactions = SectionState.Success(
                 data = listOf()
             )

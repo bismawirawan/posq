@@ -106,11 +106,14 @@ kotlin {
 
             // Gitlive Firebase
             implementation(libs.firebase.app)
-            implementation(libs.firebase.analytic)
-            implementation(libs.firebase.crashlytic)
+            implementation(libs.firebase.analytics)
+            implementation(libs.firebase.crashlytics)
 
             // Media Picker
             implementation(libs.image.picker.kmp)
+
+            //Alarmee
+            implementation(libs.alarmee)
 
             implementation(project(":data"))
             implementation(project(":shared"))

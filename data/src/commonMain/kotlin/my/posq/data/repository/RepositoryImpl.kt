@@ -14,8 +14,6 @@ import my.posq.data.network.api.Result
 import my.posq.data.network.model.response.DataResponse
 import my.posq.data.network.model.response.TokenResponse
 import my.posq.data.network.model.response.UserResponse
-import io.ktor.client.call.body
-import io.ktor.client.plugins.ClientRequestException
 import io.ktor.serialization.JsonConvertException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -28,11 +26,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import my.posq.data.local.database.model.PaymentEntity
 import my.posq.data.local.database.model.PeriodEntity
+import my.posq.data.local.database.model.SavingsEntity
 import my.posq.data.mapper.toPaymentEntity
 import my.posq.data.mapper.toPeriodEntity
+import my.posq.data.mapper.toSavingsEntity
 
 class RepositoryImpl(
     private val apiService: ApiService,
@@ -49,7 +48,7 @@ class RepositoryImpl(
             val response = apiCall()
             val data = response.data
 
-            if (data != null) {
+            if (response.status && data != null) {
                 onSuccess(data)
                 emit(Result.Success(data))
             } else {
@@ -81,7 +80,7 @@ class RepositoryImpl(
             try {
                 // Fetch new data
                 val networkResponse = fetch()
-                if (networkResponse.data != null) {
+                if (networkResponse.status && networkResponse.data != null) {
                     val mappedData = mapper(networkResponse.data)
                     // Replace cache
                     saveFetchResult(mappedData)
@@ -105,13 +104,13 @@ class RepositoryImpl(
     }
 
     override fun login(
-        identifier: String,
+        email: String,
         password: String
     ): Flow<Result<TokenResponse>> {
         return safeApiCall(
             apiCall = {
                 tokenManager.clearToken()
-                apiService.login(identifier, password)
+                apiService.login(email, password)
             },
             onSuccess = { token ->
                 tokenManager.saveAccessToken(token.accessToken.orEmpty())
@@ -139,7 +138,7 @@ class RepositoryImpl(
         email: String,
         phone: String?,
         password: String,
-        role: String,
+        userType: String,
         imageProfile: ByteArray?
     ): Flow<Result<UserResponse>> {
         return flow {
@@ -150,10 +149,10 @@ class RepositoryImpl(
                     email,
                     phone,
                     password,
-                    role,
+                    userType,
                     imageProfile
                 )
-                if (response.data != null) {
+                if (response.status && response.data != null) {
                     databaseHelper.insertUsers(listOf(response.data.toUserEntity()))
                     emit(Result.Success(response.data))
                 } else {
@@ -185,7 +184,7 @@ class RepositoryImpl(
                     role,
                     imageProfile
                 )
-                if (response.data != null) {
+                if (response.status && response.data != null) {
                     emit(Result.Success(response.data))
                 } else {
                     emit(Result.Error(Exception(response.message)))
@@ -218,7 +217,7 @@ class RepositoryImpl(
                     role,
                     imageProfile
                 )
-                if (response.data != null) {
+                if (response.status && response.data != null) {
                     emit(Result.Success(response.data))
                 } else {
                     emit(Result.Error(Exception(response.message)))
@@ -414,7 +413,7 @@ class RepositoryImpl(
                     file = file
                 )
 
-                if (response.data != null) {
+                if (response.status && response.data != null) {
                     emit(Result.Success(true))
                 } else {
                     emit(Result.Error(Exception(response.message)))
@@ -427,5 +426,27 @@ class RepositoryImpl(
                 emit(Result.Error(Exception(message)))
             }
         }.flowOn(Dispatchers.IO)
+    }
+
+    override fun getSavings(userId: Int?): Flow<Result<List<SavingsEntity>>> {
+        return networkBoundResource(
+            query = { databaseHelper.getAllSavingsAsFlow() },
+            fetch = { apiService.getSavings(userId) },
+            saveFetchResult = { networkSource ->
+                val localSavings = databaseHelper.getAllSavings()
+                val networkSavingIds = networkSource.map { it.userId }.toSet()
+                val savingsToDelete = localSavings
+                    .filter { it.userId !in networkSavingIds }
+                    .map { it.userId }
+
+                databaseHelper.deleteSavingsByIds(savingsToDelete)
+                databaseHelper.insertSavings(networkSource)
+            },
+            mapper = {
+                it.map { savingsResponse ->
+                    savingsResponse.toSavingsEntity()
+                }
+            }
+        )
     }
 }

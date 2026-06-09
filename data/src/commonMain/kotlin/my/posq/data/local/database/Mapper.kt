@@ -2,10 +2,12 @@ package my.posq.data.local.database
 
 import my.posq.PaymentData
 import my.posq.PeriodData
+import my.posq.SavingsData
 import my.posq.TransactionData
 import my.posq.UserData
 import my.posq.data.local.database.model.PaymentEntity
 import my.posq.data.local.database.model.PeriodEntity
+import my.posq.data.local.database.model.SavingsEntity
 import my.posq.data.local.database.model.TransactionEntity
 import my.posq.data.local.database.model.UserEntity
 import kotlin.text.toInt
@@ -53,5 +55,16 @@ fun UserData.toUserEntity(): UserEntity {
         phone = phone.orEmpty(),
         role = role,
         imageProfileUrl = imageProfileUrl.orEmpty()
+    )
+}
+
+fun SavingsData.toSavingsEntity(): SavingsEntity {
+    return SavingsEntity(
+        savingsId = savingsId.toInt(),
+        amount = amount.toInt(),
+        note = note,
+        savingsDate = savingsDate,
+        savingsType = savingsType,
+        userId = (userId ?: 0L).toInt()
     )
 }
